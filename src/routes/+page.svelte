@@ -25,9 +25,6 @@
 
 	function get_seed_data() {
 		const matched_seeds = seed_data.filter((seed) => {
-			// DEBUG
-			// if (seed[0] === 0) return true;
-
 			// Match first 5 items
 			const all_items_match =
 				seed[6] === item_1_id &&
@@ -46,8 +43,6 @@
 			}
 			return false;
 		});
-		console.log(seed_data);
-		console.log(matched_seeds);
 
 		found_seeds = [...matched_seeds.map((s) => new Seed(s))];
 		searched = true;
