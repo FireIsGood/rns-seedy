@@ -1,4 +1,4 @@
-import { id_to_name } from './item-map';
+import { id_to_gem, id_to_name } from './item-map';
 
 type Shop = {
 	potions: { name: string; price: number }[];
@@ -23,7 +23,7 @@ export class Seed {
 					price: shop_thing[i + 3]
 				})),
 				gems: [0, 1, 2, 3].map((i) => ({
-					name: id_to_name(shop_thing[2 * i + 6]),
+					name: id_to_gem(shop_thing[2 * i + 6]),
 					price: shop_thing[2 * i + 7]
 				}))
 			}));

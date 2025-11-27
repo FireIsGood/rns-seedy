@@ -543,28 +543,54 @@ const itemObj = {
 	500: 'Essence of Steel',
 	501: 'Evasion Potion',
 	502: 'Longarm Potion',
-	503: 'Vitality Potion',
-	504: 'Opal Primary Upgrade',
-	505: 'Opal Secondary Upgrade',
-	506: 'Opal Special Upgrade',
-	507: 'Opal Defensive Upgrade',
-	508: 'Sapphire Primary Upgrade',
-	509: 'Sapphire Secondary Upgrade',
-	510: 'Sapphire Special Upgrade',
-	511: 'Sapphire Defensive Upgrade',
-	512: 'Ruby Primary Upgrade',
-	513: 'Ruby Secondary Upgrade',
-	514: 'Ruby Special Upgrade',
-	515: 'Ruby Defensive Upgrade',
-	516: 'Garnet Primary Upgrade',
-	517: 'Garnet Secondary Upgrade',
-	518: 'Garnet Special Upgrade',
-	519: 'Garnet Defensive Upgrade',
-	520: 'Emerald Primary Upgrade',
-	521: 'Emerald Secondary Upgrade',
-	522: 'Emerald Special Upgrade',
-	523: 'Emerald Defensive Upgrade'
+	503: 'Vitality Potion'
+	// 504: 'Opal Primary Upgrade',
+	// 505: 'Opal Secondary Upgrade',
+	// 506: 'Opal Special Upgrade',
+	// 507: 'Opal Defensive Upgrade',
+	// 508: 'Sapphire Primary Upgrade',
+	// 509: 'Sapphire Secondary Upgrade',
+	// 510: 'Sapphire Special Upgrade',
+	// 511: 'Sapphire Defensive Upgrade',
+	// 512: 'Ruby Primary Upgrade',
+	// 513: 'Ruby Secondary Upgrade',
+	// 514: 'Ruby Special Upgrade',
+	// 515: 'Ruby Defensive Upgrade',
+	// 516: 'Garnet Primary Upgrade',
+	// 517: 'Garnet Secondary Upgrade',
+	// 518: 'Garnet Special Upgrade',
+	// 519: 'Garnet Defensive Upgrade',
+	// 520: 'Emerald Primary Upgrade',
+	// 521: 'Emerald Secondary Upgrade',
+	// 522: 'Emerald Special Upgrade',
+	// 523: 'Emerald Defensive Upgrade'
 };
+
+// Modified names for cleaner display
+const gemMap = new Map(
+	Object.entries({
+		504: 'Opal Primary',
+		505: 'Opal Secondary',
+		506: 'Opal Special',
+		507: 'Opal Defensive',
+		508: 'Sapphire Primary',
+		509: 'Sapphire Secondary',
+		510: 'Sapphire Special',
+		511: 'Sapphire Defensive',
+		512: 'Ruby Primary',
+		513: 'Ruby Secondary',
+		514: 'Ruby Special',
+		515: 'Ruby Defensive',
+		516: 'Garnet Primary',
+		517: 'Garnet Secondary',
+		518: 'Garnet Special',
+		519: 'Garnet Defensive',
+		520: 'Emerald Primary',
+		521: 'Emerald Secondary',
+		522: 'Emerald Special',
+		523: 'Emerald Defensive'
+	})
+);
 
 const idItemMap = new Map(Object.entries(itemObj));
 const itemIdMap = new Map(Object.entries(itemObj).map(([id, item]) => [item, id]));
@@ -602,4 +628,8 @@ export function gem_to_id(gem: string, skill_index: number): number | undefined 
 			return undefined;
 	}
 	return 504 + gem_index * 4 + skill_index;
+}
+
+export function id_to_gem(id: number): string {
+	return gemMap.get(String(id)) ?? 'ERROR_GEM';
 }

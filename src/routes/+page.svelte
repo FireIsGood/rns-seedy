@@ -48,69 +48,102 @@
 		searched = true;
 	}
 
+	function reset_seed_data() {
+		item_1 = '';
+		item_2 = '';
+		item_3 = '';
+		item_4 = '';
+		item_5 = '';
+		gem_1 = '';
+		gem_2 = '';
+		gem_3 = '';
+		gem_4 = '';
+
+		found_seeds = [];
+		searched = false;
+	}
+
 	let searched = $state(false);
 	let found_seeds = $state<Seed[]>([]);
 </script>
 
-<p>Enter first chest items to find your seed.</p>
+<h2 class="page-title">Seed-In-Progress finder</h2>
+<div class="columns">
+	<section>
+		<h3>What it Does</h3>
+		<p>
+			This tool allows you to find your <strong>current seed</strong> in a Hard or Lunar difficulty run.
+			You must fill out all the information to obtain your seed.
+		</p>
+		<h3>How to Use</h3>
+		<p>Enter first chest's items and the first shop's gems to find your seed.</p>
+		<p>
+			Chests with 5 items are read counterclockwise starting from the left. You can also press the
+			View Inventory button and then read the list left to right
+		</p>
+	</section>
 
-<section>
-	<p>First chest loot</p>
-	<fieldset class="input-area">
-		<label>
-			Item 1
-			<input list="items" type="text" bind:value={item_1} />
-		</label>
-		<label>
-			Item 2
-			<input list="items" type="text" bind:value={item_2} />
-		</label>
-		<label>
-			Item 3
-			<input list="items" type="text" bind:value={item_3} />
-		</label>
-		<label>
-			Item 4
-			<input list="items" type="text" bind:value={item_4} />
-		</label>
-		<label>
-			Item 5
-			<input list="items" type="text" bind:value={item_5} />
-		</label>
-		<datalist id="items">
-			{#each itemList as item}
-				<option value={item}></option>
-			{/each}
-		</datalist>
-	</fieldset>
-	<p>Shop gems</p>
-	<fieldset class="input-area">
-		<label>
-			Gem 1
-			<input list="gems" type="text" bind:value={gem_1} />
-		</label>
-		<label>
-			Gem 2
-			<input list="gems" type="text" bind:value={gem_2} />
-		</label>
-		<label>
-			Gem 3
-			<input list="gems" type="text" bind:value={gem_3} />
-		</label>
-		<label>
-			Gem 4
-			<input list="gems" type="text" bind:value={gem_4} />
-		</label>
-		<datalist id="gems">
-			<option value="Opal"></option>
-			<option value="Sapphire"></option>
-			<option value="Ruby"></option>
-			<option value="Garnet"></option>
-			<option value="Emerald"></option>
-		</datalist>
-	</fieldset>
-	<button on:click={get_seed_data}>Search</button>
-</section>
+	<section>
+		<fieldset class="input-area">
+			<legend>First chest loot</legend>
+			<label>
+				Item 1
+				<input list="items" type="text" bind:value={item_1} />
+			</label>
+			<label>
+				Item 2
+				<input list="items" type="text" bind:value={item_2} />
+			</label>
+			<label>
+				Item 3
+				<input list="items" type="text" bind:value={item_3} />
+			</label>
+			<label>
+				Item 4
+				<input list="items" type="text" bind:value={item_4} />
+			</label>
+			<label>
+				Item 5
+				<input list="items" type="text" bind:value={item_5} />
+			</label>
+			<datalist id="items">
+				{#each itemList as item}
+					<option value={item}></option>
+				{/each}
+			</datalist>
+		</fieldset>
+		<fieldset class="input-area">
+			<legend>Shop gems</legend>
+			<label>
+				Gem 1
+				<input list="gems" type="text" bind:value={gem_1} />
+			</label>
+			<label>
+				Gem 2
+				<input list="gems" type="text" bind:value={gem_2} />
+			</label>
+			<label>
+				Gem 3
+				<input list="gems" type="text" bind:value={gem_3} />
+			</label>
+			<label>
+				Gem 4
+				<input list="gems" type="text" bind:value={gem_4} />
+			</label>
+			<datalist id="gems">
+				<option value="Opal"></option>
+				<option value="Sapphire"></option>
+				<option value="Ruby"></option>
+				<option value="Garnet"></option>
+				<option value="Emerald"></option>
+			</datalist>
+		</fieldset>
+		<div class="button-group">
+			<button class="action-button" onclick={get_seed_data}>Search</button>
+			<button class="action-button outlined-button" onclick={reset_seed_data}>Reset</button>
+		</div>
+	</section>
+</div>
 
 <h2>Results</h2>
 {#if found_seeds.length > 0}
@@ -155,13 +188,51 @@
 {:else if !searched}
 	<p><em>Search for your seed!</em></p>
 {:else}
-	<p>No seeds found...</p>
+	<p>No seed found...</p>
 {/if}
 
 <style>
+	.page-title {
+		text-align: center;
+		max-inline-size: unset;
+		padding-bottom: 1em;
+	}
+
+	.columns {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		column-gap: 1rem;
+	}
+
 	.input-area {
+		padding: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.outlined-button {
+		background-color: unset;
+		border: var(--border-size-2) solid var(--surface-4);
+		transition: border-color 100ms;
+		&:hover {
+			border-color: color-mix(in lch, var(--surface-4), rgb(from var(--surface-1) r g b) 20%);
+		}
+		&:active {
+			border-color: color-mix(in lch, var(--surface-4), rgb(from var(--surface-1) r g b) 30%);
+		}
+	}
+
+	.seed-list {
+		padding: 1rem;
+		background-color: var(--surface-1);
+		border: var(--border-size-1) solid var(--surface-4);
+		border-radius: var(--radius-2);
+	}
+
+	.button-group {
+		display: flex;
+		gap: 1rem;
 	}
 </style>
