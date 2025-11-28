@@ -155,6 +155,12 @@
 	<div class="seed-list">
 		{#each found_seeds as seed}
 			<h3>Seed {seed.id}</h3>
+			<p>Areas (4 and 5 are unused)</p>
+			<p>
+				{#each seed.areas as area_name, index}
+					<span class:muted-text={index >= 3}>{area_name}</span>{#if index < 4},&nbsp;{/if}
+				{/each}
+			</p>
 			<p>Chests</p>
 			<ul>
 				{#each [1, 2, 3, 4, 5, 6] as chest_number, chest_index}
