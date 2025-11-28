@@ -18,7 +18,7 @@
 html {
 	--s: 80px; /* control the size*/
 	--c1: var(--surface-1);
-	--c2: color-mix(in lch, var(--surface-1), rgb(from var(--surface-2) r g b) 40%);
+	--c2: color-mix(in lch, var(--surface-1), rgb(from var(--surface-2) r g b) 80%);
 
 	--_s: calc(2 * var(--s)) calc(2 * var(--s));
 	--_g: 35.36% 35.36% at;

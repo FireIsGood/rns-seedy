@@ -156,49 +156,51 @@
 
 <hr />
 
-<h2>Results</h2>
+<h2>Results ({found_seeds.length})</h2>
 {#if found_seeds.length > 0}
 	<div class="seed-list">
 		{#each found_seeds as seed}
-			<h3>Seed {seed.id}</h3>
-			<h4>Areas</h4>
-			<p>
-				{#each seed.areas as area_name, index}
-					<span class:muted-text={index >= 3}>{area_name}</span>{#if index < 4},&nbsp;{/if}
-				{/each}
-				<em class="muted-text">(unused in vanilla)</em>
-			</p>
-			<h4>Chests</h4>
-			<ul>
-				{#each [1, 2, 3, 4, 5, 6] as chest_number, chest_index}
-					<li>
-						Chest {chest_number}:
-						{#each seed.chest(chest_index) as item, index}
-							<span>{item}</span>{#if index < 4},&nbsp;{/if}
-						{/each}
-					</li>
-				{/each}
-			</ul>
-			<h4>Shops</h4>
-			<ul>
-				{#each [1, 2, 3, 4] as shop_number, shop_index}
-					<li>
-						Shop {shop_number}:
-						<ul>
-							<li>
-								Potions: {#each seed.shop(shop_index)?.potions as gem, index}
-									<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
-								{/each}
-							</li>
-							<li>
-								Gems: {#each seed.shop(shop_index)?.gems as gem, index}
-									<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
-								{/each}
-							</li>
-						</ul>
-					</li>
-				{/each}
-			</ul>
+			<div class="seed-entry">
+				<h3>Seed {seed.id}</h3>
+				<h4>Areas</h4>
+				<p>
+					{#each seed.areas as area_name, index}
+						<span class:muted-text={index >= 3}>{area_name}</span>{#if index < 4},&nbsp;{/if}
+					{/each}
+					<em class="muted-text">(unused in vanilla)</em>
+				</p>
+				<h4>Chests</h4>
+				<ul>
+					{#each [1, 2, 3, 4, 5, 6] as chest_number, chest_index}
+						<li>
+							Chest {chest_number}:
+							{#each seed.chest(chest_index) as item, index}
+								<span>{item}</span>{#if index < 4},&nbsp;{/if}
+							{/each}
+						</li>
+					{/each}
+				</ul>
+				<h4>Shops</h4>
+				<ul>
+					{#each [1, 2, 3, 4] as shop_number, shop_index}
+						<li>
+							Shop {shop_number}:
+							<ul>
+								<li>
+									Potions: {#each seed.shop(shop_index)?.potions as gem, index}
+										<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
+									{/each}
+								</li>
+								<li>
+									Gems: {#each seed.shop(shop_index)?.gems as gem, index}
+										<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
+									{/each}
+								</li>
+							</ul>
+						</li>
+					{/each}
+				</ul>
+			</div>
 		{/each}
 	</div>
 {:else if !searched}
@@ -256,10 +258,17 @@
 	}
 
 	.seed-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.seed-entry {
 		padding: 1rem;
 		background-color: var(--surface-1);
 		border: var(--border-size-1) solid var(--surface-4);
 		border-radius: var(--radius-2);
+		box-shadow: var(--shadow-2);
 	}
 
 	.button-group {
