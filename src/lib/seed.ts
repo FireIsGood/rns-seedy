@@ -1,13 +1,18 @@
-import { id_to_gem, id_to_gem_key, id_to_name } from './item-map';
+import { id_to_gem, id_to_gem_key, id_to_name, id_to_potion } from './item-map';
 
 type Shop = {
 	potions: { name: string; price: number }[];
 	gems: { name: string; price: number; key: string }[];
 };
 
+type Item = {
+	id: number;
+	name: string;
+};
+
 export class Seed {
 	id: number;
-	chests: string[][];
+	chests: Item[][];
 	shops: Shop[];
 	areas: string[];
 
@@ -28,13 +33,13 @@ export class Seed {
 				area in this.areaMap ? this.areaMap[area as keyof typeof this.areaMap] : area
 			);
 		this.chests = [0, 1, 2, 3, 4, 5].map((i) =>
-			(<number[]>seed).slice(i * 5 + 6, i * 5 + 11).map((id) => id_to_name(id))
+			(<number[]>seed).slice(i * 5 + 6, i * 5 + 11).map((id) => ({ id, name: id_to_name(id) }))
 		);
 		this.shops = [0, 1, 2, 3]
 			.map((i) => (<number[]>seed).slice(i * 14 + 36, i * 14 + 50))
 			.map((shop_thing) => ({
 				potions: [0, 1, 2].map((i) => ({
-					name: id_to_name(shop_thing[i]),
+					name: id_to_potion(shop_thing[i]),
 					price: shop_thing[i + 3]
 				})),
 				gems: [0, 1, 2, 3].map((i) => ({
@@ -45,7 +50,7 @@ export class Seed {
 			}));
 	}
 
-	chest(index: number): string[] {
+	chest(index: number): Item[] {
 		return this.chests.at(index) ?? [];
 	}
 

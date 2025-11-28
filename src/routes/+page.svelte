@@ -3,6 +3,7 @@
 	import { name_to_id, itemList, gem_to_id } from '$lib/item-map';
 	import { Seed } from '$lib/seed';
 	import Combobox from './combobox.svelte';
+	import SeedDisplay from './seed-display.svelte';
 
 	let item_1 = $state('');
 	let item_2 = $state('');
@@ -160,48 +161,7 @@
 {#if found_seeds.length > 0}
 	<div class="seed-list">
 		{#each found_seeds as seed}
-			<div class="seed-entry">
-				<h3>Seed {seed.id}</h3>
-				<h4>Areas</h4>
-				<p>
-					{#each seed.areas as area_name, index}
-						<span class:muted-text={index >= 3}>{area_name}</span>{#if index < 4},&nbsp;{/if}
-					{/each}
-					<em class="muted-text">(unused in vanilla)</em>
-				</p>
-				<h4>Chests</h4>
-				<ul>
-					{#each [1, 2, 3, 4, 5, 6] as chest_number, chest_index}
-						<li>
-							Chest {chest_number}:
-							{#each seed.chest(chest_index) as item, index}
-								<span>{item}</span>{#if index < 4},&nbsp;{/if}
-							{/each}
-						</li>
-					{/each}
-				</ul>
-				<h4>Shops</h4>
-				<ul>
-					{#each [1, 2, 3, 4] as shop_number, shop_index}
-						<li>
-							Shop {shop_number}:
-							<ul>
-								<li>
-									Potions: {#each seed.shop(shop_index)?.potions as potion, index}
-										<span>{potion.name} ({potion.price})</span>{#if index < 2},&nbsp;{/if}
-									{/each}
-								</li>
-								<li>
-									Gems: {#each seed.shop(shop_index)?.gems as gem, index}
-										<span data-gem={gem.key}>{gem.name} ({gem.price})</span
-										>{#if index < 3},&nbsp;{/if}
-									{/each}
-								</li>
-							</ul>
-						</li>
-					{/each}
-				</ul>
-			</div>
+			<SeedDisplay {seed} />
 		{/each}
 	</div>
 {:else if !searched}
@@ -264,36 +224,8 @@
 		gap: 1rem;
 	}
 
-	.seed-entry {
-		padding: 1rem;
-		background-color: var(--surface-1);
-		border: var(--border-size-1) solid var(--surface-4);
-		border-radius: var(--radius-2);
-		box-shadow: var(--shadow-2);
-	}
-
-	[data-gem='emerald'] {
-		color: var(--color-emerald);
-	}
-	[data-gem='garnet'] {
-		color: var(--color-garnet);
-	}
-	[data-gem='ruby'] {
-		color: var(--color-ruby);
-	}
-	[data-gem='sapphire'] {
-		color: var(--color-sapphire);
-	}
-	[data-gem='opal'] {
-		color: var(--color-opal);
-	}
-
 	.button-group {
 		display: flex;
 		gap: 1rem;
-	}
-
-	h4 {
-		margin-top: 1rem;
 	}
 </style>
