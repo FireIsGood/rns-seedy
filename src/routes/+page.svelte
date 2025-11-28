@@ -2,6 +2,7 @@
 	import seed_data from '$lib/seed-data.json';
 	import { name_to_id, itemList, gem_to_id } from '$lib/item-map';
 	import { Seed } from '$lib/seed';
+	import Combobox from './combobox.svelte';
 
 	let item_1 = $state('');
 	let item_2 = $state('');
@@ -24,7 +25,8 @@
 	let gem_4_id = $derived(gem_to_id(gem_4, 3));
 
 	function get_seed_data() {
-		const matched_seeds = seed_data.filter((seed) => {
+		const matched_seeds = seed_data.filter((seed: Array<string | number>) => {
+			if (seed[0] === 0) return true;
 			// Match first 5 items
 			const all_items_match =
 				seed[6] === item_1_id &&
@@ -45,7 +47,7 @@
 			return false;
 		});
 
-		found_seeds = [...matched_seeds.map((s) => new Seed(s))];
+		found_seeds = [...matched_seeds.map((s: Array<string | number>) => new Seed(s))];
 		searched = true;
 	}
 
@@ -66,6 +68,13 @@
 
 	let searched = $state(false);
 	let found_seeds = $state<Seed[]>([]);
+
+	const items = itemList.map((item) => ({ value: item, label: item }));
+	const gems = ['Opal', 'Sapphire', 'Ruby', 'Garnet', 'Emerald'].map((item) => ({
+		value: item,
+		label: item
+	}));
+	console.log(items, gems);
 </script>
 
 <h2 class="page-title">Seed-In-Progress finder</h2>
@@ -87,29 +96,28 @@
 			View Inventory button and then read the list left to right. Gems are read left to right.
 		</p>
 	</section>
-
 	<section>
 		<fieldset class="input-area">
 			<legend>First chest loot</legend>
 			<label>
 				Item 1
-				<input list="items" type="text" bind:value={item_1} />
+				<Combobox type="single" {items} bind:value={item_1} />
 			</label>
 			<label>
 				Item 2
-				<input list="items" type="text" bind:value={item_2} />
+				<Combobox type="single" {items} bind:value={item_2} />
 			</label>
 			<label>
 				Item 3
-				<input list="items" type="text" bind:value={item_3} />
+				<Combobox type="single" {items} bind:value={item_3} />
 			</label>
 			<label>
 				Item 4
-				<input list="items" type="text" bind:value={item_4} />
+				<Combobox type="single" {items} bind:value={item_4} />
 			</label>
 			<label>
 				Item 5
-				<input list="items" type="text" bind:value={item_5} />
+				<Combobox type="single" {items} bind:value={item_5} />
 			</label>
 			<datalist id="items">
 				{#each itemList as item}
@@ -120,28 +128,21 @@
 		<fieldset class="input-area">
 			<legend>Shop gems <em>(optional)</em></legend>
 			<label>
-				Gem 1
-				<input list="gems" type="text" bind:value={gem_1} />
+				Primary Gem
+				<Combobox type="single" items={gems} bind:value={gem_1} />
 			</label>
 			<label>
-				Gem 2
-				<input list="gems" type="text" bind:value={gem_2} />
+				Secondary Gem
+				<Combobox type="single" items={gems} bind:value={gem_2} />
 			</label>
 			<label>
-				Gem 3
-				<input list="gems" type="text" bind:value={gem_3} />
+				Special Gem
+				<Combobox type="single" items={gems} bind:value={gem_3} />
 			</label>
 			<label>
-				Gem 4
-				<input list="gems" type="text" bind:value={gem_4} />
+				Defensive Gem
+				<Combobox type="single" items={gems} bind:value={gem_4} />
 			</label>
-			<datalist id="gems">
-				<option value="Opal"></option>
-				<option value="Sapphire"></option>
-				<option value="Ruby"></option>
-				<option value="Garnet"></option>
-				<option value="Emerald"></option>
-			</datalist>
 		</fieldset>
 		<div class="button-group">
 			<button class="action-button" onclick={get_seed_data}>Search</button>
@@ -221,6 +222,12 @@
 		flex-direction: column;
 		gap: 0.5rem;
 		margin-bottom: 0.75rem;
+
+		label {
+			display: flex;
+			gap: 1ch;
+			align-items: center;
+		}
 	}
 
 	.outlined-button {

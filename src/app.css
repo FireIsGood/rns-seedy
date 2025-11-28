@@ -8,6 +8,11 @@
 }
 
 :root {
+	--brand: var(--blue-2);
+}
+
+:focus-visible {
+	outline-offset: 0;
 }
 
 html {
