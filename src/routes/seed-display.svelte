@@ -11,9 +11,13 @@
 
 {#snippet area(name: string)}
 	<div class="area">
-		{#await import(`$lib/assets/areas/${area_to_icon(name)}.webp`) then { default: src }}
-			<img class="area-icon" {src} alt="Area icon" />
-		{/await}
+		<img
+			width="100"
+			height="95"
+			class="area-icon"
+			src={`areas/${area_to_icon(name)}.webp`}
+			alt="Area icon"
+		/>
 		<p>{area_to_name(name)}</p>
 	</div>
 {/snippet}
@@ -22,9 +26,13 @@
 	<div class="item-list">
 		{#each seed.chest(index) as item}
 			<div class="item">
-				{#await import(`$lib/assets/loot/${id_to_icon(item.id)}.webp`) then { default: src }}
-					<img class="item-icon" {src} alt="Loot item" />
-				{/await}
+				<img
+					width="110"
+					height="110"
+					class="item-icon"
+					src={`loot/${id_to_icon(item.id)}.webp`}
+					alt="Loot item"
+				/>
 				<p>{item.name}</p>
 			</div>
 		{/each}
@@ -143,6 +151,7 @@
 
 	.area-icon {
 		width: 100px;
+		aspect-ratio: 20 / 19;
 	}
 
 	:global(.area-arrow) {
@@ -168,11 +177,12 @@
 		gap: 0.5rem;
 		align-items: center;
 		color: var(--text-2);
-		text-align: center;
+		overflow-wrap: anywhere;
 	}
 
 	.item-icon {
 		width: 40px;
+		aspect-ratio: 1 / 1;
 	}
 
 	.area-icon-small {
