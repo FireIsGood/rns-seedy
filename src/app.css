@@ -90,7 +90,7 @@ button {
 }
 
 .muted-text {
-	color: var(--surface-4);
+	color: var(--text-2);
 }
 
 @media screen and (width > 1060px) {
