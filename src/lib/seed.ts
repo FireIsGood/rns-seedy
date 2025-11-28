@@ -1,8 +1,8 @@
 import { area_to_name, id_to_gem, id_to_gem_key, id_to_name, id_to_potion } from './item-map';
 
 type Shop = {
-	potions: { name: string; price: number }[];
-	gems: { name: string; price: number; key: string }[];
+	potions: { name: string; price: number; id: number }[];
+	gems: { name: string; price: number; key: string; id: number }[];
 };
 
 type Item = {
@@ -27,12 +27,14 @@ export class Seed {
 			.map((shop_thing) => ({
 				potions: [0, 1, 2].map((i) => ({
 					name: id_to_potion(shop_thing[i]),
-					price: shop_thing[i + 3]
+					price: shop_thing[i + 3],
+					id: shop_thing[i]
 				})),
 				gems: [0, 1, 2, 3].map((i) => ({
 					name: id_to_gem(shop_thing[2 * i + 6]),
 					price: shop_thing[2 * i + 7],
-					key: id_to_gem_key(shop_thing[2 * i + 6])
+					key: id_to_gem_key(shop_thing[2 * i + 6]),
+					id: shop_thing[2 * i + 6]
 				}))
 			}));
 	}

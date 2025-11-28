@@ -1,6 +1,12 @@
 <script lang="ts">
 	import IconArrowFatRightFill from 'phosphor-icons-svelte/IconArrowFatRightFill.svelte';
-	import { id_to_icon, area_to_icon, area_to_name } from '$lib/item-map';
+	import {
+		id_to_icon,
+		area_to_icon,
+		area_to_name,
+		id_to_gem_icon,
+		id_to_potion_icon
+	} from '$lib/item-map';
 	import { Seed } from '$lib/seed';
 	type Props = {
 		seed: Seed;
@@ -15,7 +21,7 @@
 			width="100"
 			height="95"
 			class="area-icon"
-			src={`areas/${area_to_icon(name)}.webp`}
+			src={`images/areas/${area_to_icon(name)}.webp`}
 			alt="Area icon"
 		/>
 		<p>{area_to_name(name)}</p>
@@ -30,7 +36,7 @@
 					width="110"
 					height="110"
 					class="item-icon"
-					src={`loot/${id_to_icon(item.id)}.webp`}
+					src={`images/loot/${id_to_icon(item.id)}.webp`}
 					alt="Loot item"
 				/>
 				<p>{item.name}</p>
@@ -40,24 +46,52 @@
 {/snippet}
 
 {#snippet shop(index: number)}
-	<ul>
-		<li>
-			Potions: {#each seed.shop(index)?.potions as potion, index}
-				<span>{potion.name} ({potion.price})</span>{#if index < 2},&nbsp;{/if}
-			{/each}
-		</li>
-		<li>
-			Gems: {#each seed.shop(index)?.gems as gem, index}
-				<span data-gem={gem.key}>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
-			{/each}
-		</li>
-	</ul>
+	<div class="potion-list">
+		{#each seed.shop(index)?.potions as potion}
+			<div class="potion">
+				<img
+					width="135"
+					height="135"
+					class="item-icon"
+					src={`images/potions/${id_to_potion_icon(potion.id)}.png`}
+					alt="Loot item"
+				/>
+				<div class="potion-text">
+					<p>{potion.name}</p>
+					<p><span class="item-price">{@render coin()} {potion.price}</span></p>
+				</div>
+			</div>
+		{/each}
+	</div>
+	<div class="gem-list">
+		{#each seed.shop(index)?.gems as gem}
+			<div class="gem">
+				<img
+					width="110"
+					height="110"
+					class="item-icon"
+					src={`images/gems/${id_to_gem_icon(gem.id)}.png`}
+					alt="Loot item"
+				/>
+				<div class="gem-text">
+					<p data-gem={gem.key}>{gem.name}</p>
+					<p><span class="item-price">{@render coin()} {gem.price}</span></p>
+				</div>
+			</div>
+		{/each}
+	</div>
+{/snippet}
+
+{#snippet coin()}
+	<img width="60" height="60" class="coin" src={`images/coin.png`} alt="Coin" />
 {/snippet}
 
 {#snippet areaIconSmall(name: string)}
-	{#await import(`$lib/assets/areas/${area_to_icon(name)}.webp`) then { default: src }}
-		<img class="area-icon-small" {src} alt={area_to_name(name)} />
-	{/await}
+	<img
+		class="area-icon-small"
+		src={`images/areas/${area_to_icon(name)}.webp`}
+		alt={area_to_name(name)}
+	/>
 {/snippet}
 
 <div class="seed-entry">
@@ -90,13 +124,13 @@
 		{@render chest(5)}
 	</div>
 	<h4>Shops</h4>
-	<p>{seed.areaTitle(0)} Shop {@render areaIconSmall(seed.areaName(0))}</p>
+	<p class="shop-label">{seed.areaTitle(0)} Shop {@render areaIconSmall(seed.areaName(0))}</p>
 	{@render shop(0)}
-	<p>{seed.areaTitle(1)} Shop {@render areaIconSmall(seed.areaName(1))}</p>
+	<p class="shop-label">{seed.areaTitle(1)} Shop {@render areaIconSmall(seed.areaName(1))}</p>
 	{@render shop(1)}
-	<p>{seed.areaTitle(2)} Shop {@render areaIconSmall(seed.areaName(2))}</p>
+	<p class="shop-label">{seed.areaTitle(2)} Shop {@render areaIconSmall(seed.areaName(2))}</p>
 	{@render shop(2)}
-	<p>Pale Keep Shop {@render areaIconSmall('extra_pale_keep')}</p>
+	<p class="shop-label">Pale Keep Shop {@render areaIconSmall('extra_pale_keep')}</p>
 	{@render shop(3)}
 </div>
 
@@ -121,17 +155,9 @@
 		box-shadow: var(--shadow-2);
 	}
 
-	.chest-label {
+	.chest-label,
+	.shop-label {
 		margin-top: 0.5rem;
-	}
-
-	.item-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-		gap: 1rem;
-		background-color: var(--surface-2);
-		padding: var(--size-2);
-		border-radius: var(--size-2);
 	}
 
 	.area-list {
@@ -172,6 +198,15 @@
 		}
 	}
 
+	.item-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 1rem;
+		background-color: var(--surface-2);
+		padding: var(--size-2);
+		border-radius: var(--size-2);
+	}
+
 	.item {
 		display: flex;
 		gap: 0.5rem;
@@ -183,6 +218,59 @@
 	.item-icon {
 		width: 40px;
 		aspect-ratio: 1 / 1;
+	}
+
+	.potion-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 1rem;
+		background-color: var(--surface-2);
+		padding: var(--size-2);
+	}
+
+	.potion {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+		color: var(--text-2);
+		overflow-wrap: anywhere;
+	}
+
+	.gem-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 1rem;
+		background-color: var(--surface-2);
+		padding: var(--size-2);
+	}
+
+	.gem {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+		color: var(--text-2);
+		overflow-wrap: anywhere;
+	}
+
+	.gem-text,
+	.potion-text {
+		line-height: 1.2;
+	}
+
+	.item-price {
+		display: inline-block;
+		padding: 0 0.25em 0.15em;
+		border-radius: 0.25rem;
+		border: 2px solid var(--surface-3);
+		background: var(--surface-1);
+		line-height: 1.2;
+	}
+
+	.coin {
+		display: inline;
+		width: 1rem;
+		aspect-ratio: 1 / 1;
+		vertical-align: bottom;
 	}
 
 	.area-icon-small {

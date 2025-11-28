@@ -587,6 +587,24 @@ const potionMap = new Map(
 	})
 );
 
+const potionIconMap = {
+	489: 'Regeneration_Potion',
+	490: 'Essence_of_Spell',
+	491: 'Darkness_Potion',
+	492: 'Quickening_Potion',
+	493: 'Winged_Potion',
+	494: 'Essence_of_Wit',
+	495: 'Swifthand_Potion',
+	496: 'Fire_Potion',
+	497: 'Essence_of_Strength',
+	498: 'Golden_Potion',
+	499: 'Luck_Potion',
+	500: 'Essence_of_Steel',
+	501: 'Evasion_Potion',
+	502: 'Longarm_Potion',
+	503: 'Vitality_Potion'
+};
+
 // Modified names for cleaner display
 const gemMap = new Map(
 	Object.entries({
@@ -655,6 +673,11 @@ export function id_to_potion(id: number): string {
 	return potionMap.get(String(id)) ?? 'ERROR_POTION';
 }
 
+export function id_to_potion_icon(id: number): string {
+	if (!(id in potionIconMap)) return 'ERROR_ICON';
+	return potionIconMap[id as keyof typeof potionIconMap];
+}
+
 // skill_index referring to the skill (primary, secondary, special, defensive), starting at 0
 export function gem_to_id(gem: string, skill_index: number): number | undefined {
 	let gem_index: number;
@@ -686,6 +709,34 @@ export function id_to_gem(id: number): string {
 
 export function id_to_gem_key(id: number): string {
 	return gemKeyMap.get(String(id)) ?? 'ERROR_GEM';
+}
+
+const gemKeyIconMap = {
+	504: 'Spr_upgrade_purple_0',
+	505: 'Spr_upgrade_purple_1',
+	506: 'Spr_upgrade_purple_2',
+	507: 'Spr_upgrade_purple_3',
+	508: 'Spr_upgrade_blue_0',
+	509: 'Spr_upgrade_blue_1',
+	510: 'Spr_upgrade_blue_2',
+	511: 'Spr_upgrade_blue_3',
+	512: 'Spr_upgrade_red_0',
+	513: 'Spr_upgrade_red_1',
+	514: 'Spr_upgrade_red_2',
+	515: 'Spr_upgrade_red_3',
+	516: 'Spr_upgrade_yellow_0',
+	517: 'Spr_upgrade_yellow_1',
+	518: 'Spr_upgrade_yellow_2',
+	519: 'Spr_upgrade_yellow_3',
+	520: 'Spr_upgrade_green_0',
+	521: 'Spr_upgrade_green_1',
+	522: 'Spr_upgrade_green_2',
+	523: 'Spr_upgrade_green_3'
+};
+
+export function id_to_gem_icon(id: number): string {
+	if (!(id in gemKeyIconMap)) return 'ERROR_ICON';
+	return gemKeyIconMap[id as keyof typeof gemKeyIconMap];
 }
 
 // yay icon map!! Thanks to babit_ from the RnS Discord for this
