@@ -24,6 +24,11 @@
 	let gem_3_id = $derived(gem_to_id(gem_3, 2));
 	let gem_4_id = $derived(gem_to_id(gem_4, 3));
 
+	function loadExampleSeed() {
+		found_seeds = [new Seed(seed_data[0])];
+		searched = true;
+	}
+
 	function get_seed_data() {
 		const matched_seeds = seed_data.filter((seed: Array<string | number>) => {
 			// Match first 5 items
@@ -149,18 +154,21 @@
 	</section>
 </div>
 
+<hr />
+
 <h2>Results</h2>
 {#if found_seeds.length > 0}
 	<div class="seed-list">
 		{#each found_seeds as seed}
 			<h3>Seed {seed.id}</h3>
-			<p>Areas (4 and 5 are unused)</p>
+			<h4>Areas</h4>
 			<p>
 				{#each seed.areas as area_name, index}
 					<span class:muted-text={index >= 3}>{area_name}</span>{#if index < 4},&nbsp;{/if}
 				{/each}
+				<em class="muted-text">(unused in vanilla)</em>
 			</p>
-			<p>Chests</p>
+			<h4>Chests</h4>
 			<ul>
 				{#each [1, 2, 3, 4, 5, 6] as chest_number, chest_index}
 					<li>
@@ -171,27 +179,25 @@
 					</li>
 				{/each}
 			</ul>
-			<p>Shops</p>
+			<h4>Shops</h4>
 			<ul>
-				<ul>
-					{#each [1, 2, 3, 4] as shop_number, shop_index}
-						<li>
-							Shop {shop_number}:
-							<ul>
-								<li>
-									Potions: {#each seed.shop(shop_index)?.potions as gem, index}
-										<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
-									{/each}
-								</li>
-								<li>
-									Gems: {#each seed.shop(shop_index)?.gems as gem, index}
-										<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
-									{/each}
-								</li>
-							</ul>
-						</li>
-					{/each}
-				</ul>
+				{#each [1, 2, 3, 4] as shop_number, shop_index}
+					<li>
+						Shop {shop_number}:
+						<ul>
+							<li>
+								Potions: {#each seed.shop(shop_index)?.potions as gem, index}
+									<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
+								{/each}
+							</li>
+							<li>
+								Gems: {#each seed.shop(shop_index)?.gems as gem, index}
+									<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
+								{/each}
+							</li>
+						</ul>
+					</li>
+				{/each}
 			</ul>
 		{/each}
 	</div>
@@ -199,6 +205,11 @@
 	<p><em>Search for your seed!</em></p>
 {:else}
 	<p>No seed found...</p>
+	<p>
+		Want example? You can <button class="inline-button" onclick={loadExampleSeed}
+			>Load the Example Seed</button
+		>
+	</p>
 {/if}
 
 <style>
@@ -240,6 +251,10 @@
 		}
 	}
 
+	.inline-button {
+		width: unset;
+	}
+
 	.seed-list {
 		padding: 1rem;
 		background-color: var(--surface-1);
@@ -250,5 +265,9 @@
 	.button-group {
 		display: flex;
 		gap: 1rem;
+	}
+
+	h4 {
+		margin-top: 1rem;
 	}
 </style>
