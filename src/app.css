@@ -22,6 +22,8 @@
 }
 
 html {
+	font-family: Inter var(--font-system-ui);
+
 	--s: 80px; /* control the size*/
 	--c1: var(--surface-1);
 	--c2: color-mix(in lch, var(--surface-1), rgb(from var(--surface-2) r g b) 80%);
