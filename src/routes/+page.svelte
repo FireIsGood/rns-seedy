@@ -33,11 +33,12 @@
 				seed[9] === item_4_id &&
 				seed[10] === item_5_id;
 			// Items and prices are adjacent so index are every 2
+			// Optionally can be ignored
 			const all_gems_match =
-				seed[42] === gem_1_id &&
-				seed[44] === gem_2_id &&
-				seed[46] === gem_3_id &&
-				seed[48] === gem_4_id;
+				(gem_1 === '' || seed[42] === gem_1_id) &&
+				(gem_2 === '' || seed[44] === gem_2_id) &&
+				(gem_3 === '' || seed[46] === gem_3_id) &&
+				(gem_4 === '' || seed[48] === gem_4_id);
 			if (all_items_match && all_gems_match) {
 				return true;
 			}
@@ -69,17 +70,21 @@
 
 <h2 class="page-title">Seed-In-Progress finder</h2>
 <div class="columns">
-	<section>
+	<section class="prose">
 		<h3>What it Does</h3>
 		<p>
 			This tool allows you to find your <strong>current seed</strong> in a Hard or Lunar difficulty run.
-			You must fill out all the information to obtain your seed.
+			Loot and shops are generated separately, so you need one chest of loot to figure out chests and
+			one shop to figure out shops
 		</p>
 		<h3>How to Use</h3>
-		<p>Enter first chest's items and the first shop's gems to find your seed.</p>
 		<p>
-			Chests with 5 items are read counterclockwise starting from the left. You can also press the
-			View Inventory button and then read the list left to right
+			Enter first chest's items and press Search to find all future items. You can optionally add
+			the first shop's gems to find out what the rest of the run's gems will be.
+		</p>
+		<p>
+			The first chest is read counterclockwise starting from the top left. You can also press the
+			View Inventory button and then read the list left to right. Gems are read left to right.
 		</p>
 	</section>
 
@@ -113,7 +118,7 @@
 			</datalist>
 		</fieldset>
 		<fieldset class="input-area">
-			<legend>Shop gems</legend>
+			<legend>Shop gems <em>(optional)</em></legend>
 			<label>
 				Gem 1
 				<input list="gems" type="text" bind:value={gem_1} />

@@ -56,7 +56,11 @@ h3 {
 	margin-bottom: 0.25em;
 }
 
-p:not(:last-child) {
+p {
+	max-inline-size: unset;
+}
+
+.prose p:not(:last-child) {
 	margin-bottom: 1em;
 }
 
@@ -77,6 +81,10 @@ button {
 	&:active {
 		background-color: color-mix(in lch, var(--surface-3), rgb(from var(--surface-1) r g b) 30%);
 	}
+}
+
+.muted-text {
+	color: var(--surface-4);
 }
 
 @media screen and (width > 1060px) {
