@@ -187,13 +187,14 @@
 							Shop {shop_number}:
 							<ul>
 								<li>
-									Potions: {#each seed.shop(shop_index)?.potions as gem, index}
-										<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
+									Potions: {#each seed.shop(shop_index)?.potions as potion, index}
+										<span>{potion.name} ({potion.price})</span>{#if index < 2},&nbsp;{/if}
 									{/each}
 								</li>
 								<li>
 									Gems: {#each seed.shop(shop_index)?.gems as gem, index}
-										<span>{gem.name} ({gem.price})</span>{#if index < 3},&nbsp;{/if}
+										<span data-gem={gem.key}>{gem.name} ({gem.price})</span
+										>{#if index < 3},&nbsp;{/if}
 									{/each}
 								</li>
 							</ul>
@@ -269,6 +270,22 @@
 		border: var(--border-size-1) solid var(--surface-4);
 		border-radius: var(--radius-2);
 		box-shadow: var(--shadow-2);
+	}
+
+	[data-gem='emerald'] {
+		color: var(--color-emerald);
+	}
+	[data-gem='garnet'] {
+		color: var(--color-garnet);
+	}
+	[data-gem='ruby'] {
+		color: var(--color-ruby);
+	}
+	[data-gem='sapphire'] {
+		color: var(--color-sapphire);
+	}
+	[data-gem='opal'] {
+		color: var(--color-opal);
 	}
 
 	.button-group {

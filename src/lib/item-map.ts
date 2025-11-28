@@ -591,6 +591,31 @@ const gemMap = new Map(
 		523: 'Emerald Defensive'
 	})
 );
+// Evil
+const gemKeyMap = new Map(
+	Object.entries({
+		504: 'opal',
+		505: 'opal',
+		506: 'opal',
+		507: 'opal',
+		508: 'sapphire',
+		509: 'sapphire',
+		510: 'sapphire',
+		511: 'sapphire',
+		512: 'ruby',
+		513: 'ruby',
+		514: 'ruby',
+		515: 'ruby',
+		516: 'garnet',
+		517: 'garnet',
+		518: 'garnet',
+		519: 'garnet',
+		520: 'emerald',
+		521: 'emerald',
+		522: 'emerald',
+		523: 'emerald'
+	})
+);
 
 const idItemMap = new Map(Object.entries(itemObj));
 const itemIdMap = new Map(Object.entries(itemObj).map(([id, item]) => [item, id]));
@@ -632,4 +657,8 @@ export function gem_to_id(gem: string, skill_index: number): number | undefined 
 
 export function id_to_gem(id: number): string {
 	return gemMap.get(String(id)) ?? 'ERROR_GEM';
+}
+
+export function id_to_gem_key(id: number): string {
+	return gemKeyMap.get(String(id)) ?? 'ERROR_GEM';
 }

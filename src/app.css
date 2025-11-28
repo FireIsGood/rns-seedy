@@ -9,6 +9,12 @@
 
 :root {
 	--brand: var(--blue-2);
+
+	--color-emerald: oklch(from var(--link) l c 159.32);
+	--color-garnet: oklch(from var(--link) l c 72.25);
+	--color-ruby: oklch(from var(--link) l c 16.6);
+	--color-sapphire: oklch(from var(--link) l c 236.35);
+	--color-opal: oklch(from var(--link) l c 276.98);
 }
 
 :focus-visible {
