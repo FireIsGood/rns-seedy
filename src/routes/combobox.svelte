@@ -107,6 +107,8 @@
 
 	:global(.combobox-viewport) {
 		padding: var(--size-1);
+		overscroll-behavior-block: contain;
+
 		&[data-combobox-viewport] {
 			scrollbar-width: thin !important;
 		}

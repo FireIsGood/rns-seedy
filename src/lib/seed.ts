@@ -29,6 +29,13 @@ type Chest = {
 	items: Item[];
 };
 
+const playerCountToLootMap = {
+	1: 3,
+	2: 4,
+	3: 4,
+	4: 5
+};
+
 export class Seed {
 	id: number;
 	shops: Shop[];
@@ -67,8 +74,45 @@ export class Seed {
 			}));
 	}
 
-	chest(index: number): Chest | undefined {
-		return this.chests.at(index);
+	chest(index: number, playerCount: number = 4): Chest | undefined {
+		if (!(playerCount in playerCountToLootMap)) return undefined;
+
+		const chest = this.chests.at(index);
+		if (!chest) return undefined;
+
+		const alwaysFullChest = index === 0 || index === 1;
+		if (playerCount === 4 || alwaysFullChest) return chest;
+
+		// 1-3 players have less items and white chests use the same stock
+		const itemCount = playerCountToLootMap[playerCount as keyof typeof playerCountToLootMap];
+		if (chest.colorId !== 2) {
+			return Object.assign(structuredClone(chest), {
+				items: chest.items.slice(0, itemCount)
+			});
+		}
+
+		// White chests are rolled in order together so seeing 3/5 items means your
+		// next 3 will reuse the remaining 2, etc.
+		//
+		// To find a given white chest's loot given this fact, we can count the
+		// prior chests and then filter to the window of values in the list of all
+		// white chest loot.
+		//
+		// First two chests always show 5 so we ignore them for this calculation
+		const priorWhiteChestCount = this.chests
+			.slice(0, index)
+			.filter((c, i) => i !== 0 && i !== 1 && c.colorId === 2).length;
+		const whiteChests = this.chests.filter((c, i) => i !== 0 && i !== 1 && c.colorId === 2);
+		const whiteChestItems = whiteChests.flatMap((c) => c.items);
+
+		const thisChestItems = whiteChestItems.slice(
+			priorWhiteChestCount * itemCount,
+			priorWhiteChestCount * itemCount + itemCount
+		);
+
+		return Object.assign(structuredClone(chest), {
+			items: thisChestItems
+		});
 	}
 
 	shop(index: number): Shop | undefined {

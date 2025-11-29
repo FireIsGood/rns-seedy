@@ -3,6 +3,7 @@
 	import { name_to_id, itemList, gem_to_id } from '$lib/item-map';
 	import { Seed } from '$lib/seed';
 	import Combobox from './combobox.svelte';
+	import PlayerCount from './player-count.svelte';
 	import SeedDisplay from './seed-display.svelte';
 	import { browser } from '$app/environment';
 
@@ -75,6 +76,8 @@
 	let searched = $state(false);
 	let found_seeds = $state<Seed[]>([]);
 
+	let playerCount = $state(4);
+
 	const items = itemList.map((item) => ({ value: item, label: item }));
 	const gems = ['Opal', 'Sapphire', 'Ruby', 'Garnet', 'Emerald'].map((item) => ({
 		value: item,
@@ -138,11 +141,14 @@
 		</div>
 	</section>
 </div>
-<h2 class="results">Results ({found_seeds.length})</h2>
+<div class="result-header">
+	<h2>Results ({found_seeds.length})</h2>
+	<PlayerCount bind:value={playerCount} />
+</div>
 {#if found_seeds.length > 0}
 	<div class="seed-list">
 		{#each found_seeds as seed}
-			<SeedDisplay {seed} />
+			<SeedDisplay {seed} {playerCount} />
 		{/each}
 	</div>
 {:else if !searched}
@@ -211,7 +217,10 @@
 		gap: 1rem;
 	}
 
-	.results {
-		margin-top: 1em;
+	.result-header {
+		margin-top: 2.5rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 </style>

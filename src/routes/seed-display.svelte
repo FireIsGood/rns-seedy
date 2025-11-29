@@ -12,9 +12,10 @@
 	import { Seed } from '$lib/seed';
 	type Props = {
 		seed: Seed;
+		playerCount: number;
 	};
 
-	let { seed }: Props = $props();
+	let { seed, playerCount = $bindable() }: Props = $props();
 </script>
 
 {#snippet area(name: string)}
@@ -47,7 +48,7 @@
 			? `--chest-background: var(--surface-${seed.chest(index)?.name}); --chest-color: var(--color-${seed.chest(index)?.name})`
 			: null}
 	>
-		{#each seed.chest(index)?.items as item}
+		{#each seed.chest(index, playerCount)?.items as item}
 			<div class="item">
 				<img
 					width="110"
@@ -145,7 +146,7 @@
 {/snippet}
 
 <div class="seed-entry">
-	<h3>Seed {seed.id}</h3>
+	<h3>Seed {seed.id} ({playerCount}p)</h3>
 	<h4>
 		Areas {@render inlineIcon(`images/areas/${area_to_icon('extra_moonlit_prescipice')}.webp`)}
 	</h4>
