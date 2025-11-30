@@ -183,12 +183,6 @@
 		flex-direction: column;
 		gap: 0.5rem;
 		margin-bottom: 0.75rem;
-
-		label {
-			display: flex;
-			gap: 1ch;
-			align-items: center;
-		}
 	}
 
 	.combobox-label {
