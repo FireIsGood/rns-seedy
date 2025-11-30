@@ -143,16 +143,3 @@
 		</div>
 	</section>
 </div>
-
-<style>
-	.combobox-label {
-		font-size: var(--font-size-1);
-	}
-
-	.combobox-aligned-input {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		align-items: center;
-		gap: var(--size-2) 1ch;
-	}
-</style>

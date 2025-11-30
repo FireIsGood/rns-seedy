@@ -7,6 +7,7 @@
 	import SeedInProgress from './seed-in-progress.svelte';
 	import SeedSelect from './seed-select.svelte';
 	import { Tabs } from 'bits-ui';
+	import SeedSearch from './seed-search.svelte';
 
 	onMount(async () => {
 		seed_data = await (await fetch('data/seed-data.json')).json(); // Static assets makes the IDE happy
@@ -37,12 +38,16 @@
 		<Tabs.Trigger value="select" class="outlined-button tab-button">
 			Direct Seed Finder
 		</Tabs.Trigger>
+		<Tabs.Trigger value="search" class="outlined-button tab-button">End Seed Searcher</Tabs.Trigger>
 	</Tabs.List>
 	<Tabs.Content value="progress">
 		<SeedInProgress {seed_data} bind:possible_seeds={found_seeds} bind:searched bind:loading />
 	</Tabs.Content>
 	<Tabs.Content value="select">
 		<SeedSelect {seed_data} bind:possible_seeds={found_seeds} bind:searched bind:loading />
+	</Tabs.Content>
+	<Tabs.Content value="search">
+		<SeedSearch {seed_data} bind:possible_seeds={found_seeds} bind:searched bind:loading />
 	</Tabs.Content>
 </Tabs.Root>
 <div class="result-header">
@@ -86,7 +91,7 @@
 
 	:global(.tab-list) {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 		gap: var(--size-3);
 		margin-bottom: var(--size-4);
 	}

@@ -198,3 +198,14 @@ input:not([type='button'], [type='submit'], [type='reset']) {
 	display: flex;
 	gap: 1rem;
 }
+
+.combobox-label {
+	font-size: var(--font-size-1);
+}
+
+.combobox-aligned-input {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: var(--size-2) 1ch;
+}
