@@ -49,7 +49,11 @@
 <footer>
 	<ul class="info">
 		<li>Made by FireIsGood</li>
-		<li>Seed data derived by members of the mino_dev Official Discord</li>
+		<li>
+			Seed data derived by members of the <a href="https://discord.com/invite/mns" target="_blank"
+				>mino_dev Official Discord</a
+			>
+		</li>
 		<li><a href="https://github.com/FireIsGood/rns-seedy">source code</a></li>
 	</ul>
 	<ul>
