@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Seed } from '$lib/seed';
-	import { itemList, name_to_id, type SeedData } from '$lib/item-map';
+	import { gem_to_id, itemList, name_to_id, type SeedData } from '$lib/item-map';
 	import Combobox from './combobox.svelte';
 
 	type Props = {
@@ -34,6 +34,15 @@
 	let area_2 = $state('');
 	let area_3 = $state('');
 
+	let gem_1 = $state('');
+	let gem_2 = $state('');
+	let gem_3 = $state('');
+	let gem_4 = $state('');
+	let gem_1_id = $derived(gem_to_id(gem_1, 0));
+	let gem_2_id = $derived(gem_to_id(gem_2, 1));
+	let gem_3_id = $derived(gem_to_id(gem_3, 2));
+	let gem_4_id = $derived(gem_to_id(gem_4, 3));
+
 	// Area searches find >5000 but item searches cap at ~3500... Compromise for performance!
 	const maxSeedSearch = 5000;
 
@@ -50,15 +59,22 @@
 				(id, index) =>
 					id === 0 || seed.slice((index + 1) * 5 + 1, (index + 1) * 5 + 5 + 1).includes(id) // Blank = Match any
 			);
+			if (!itemMatch) return false;
 			const areasMatch = [area_1, area_2, area_3].every(
 				(id, index) => id === '' || seed.at(index + 1) === id // Blank = Match any
 			);
-			if (itemMatch && areasMatch) {
-				matchCount += 1;
-				return true;
-			}
+			if (!areasMatch) return false;
 
-			return false;
+			// Limit by gems on the smaller set for performance
+			const gemsMatch = [gem_1_id, gem_2_id, gem_3_id, gem_4_id].every(
+				(id, index) =>
+					id === undefined ||
+					[0, 1, 2, 3].some((shop) => seed.at(shop * 14 + index * 2 + 42) === id) // Blank = Match any
+			);
+			if (!gemsMatch) return false;
+
+			matchCount += 1;
+			return true;
 		});
 
 		possible_seeds = [...matched_seeds.map((s) => new Seed(s))];
@@ -77,6 +93,11 @@
 		area_2 = '';
 		area_3 = '';
 
+		gem_1 = '';
+		gem_2 = '';
+		gem_3 = '';
+		gem_4 = '';
+
 		possible_seeds = [];
 		searched = false;
 	}
@@ -89,6 +110,10 @@
 		{ value: 'hw_streets', label: 'Churchmouse Streets (Mice)' },
 		{ value: 'hw_lakeside', label: 'Emerald Lakeside (Frogs)' }
 	];
+	const gems = ['Opal', 'Sapphire', 'Ruby', 'Garnet', 'Emerald'].map((item) => ({
+		value: item,
+		label: item
+	}));
 </script>
 
 <h2 class="page-title">End Seed Searcher</h2>
@@ -137,6 +162,19 @@
 				<Combobox type="single" items={areas} bind:value={area_2} />
 				<p class="combobox-label">Area 3</p>
 				<Combobox type="single" items={areas} bind:value={area_3} />
+			</div>
+		</fieldset>
+		<fieldset class="input-area">
+			<legend>Shop gems</legend>
+			<div class="combobox-aligned-input">
+				<p class="combobox-label">Primary Gem</p>
+				<Combobox type="single" items={gems} bind:value={gem_1} />
+				<p class="combobox-label">Secondary Gem</p>
+				<Combobox type="single" items={gems} bind:value={gem_2} />
+				<p class="combobox-label">Special Gem</p>
+				<Combobox type="single" items={gems} bind:value={gem_3} />
+				<p class="combobox-label">Defensive Gem</p>
+				<Combobox type="single" items={gems} bind:value={gem_4} />
 			</div>
 		</fieldset>
 		<div class="button-group">
