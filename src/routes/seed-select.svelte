@@ -17,7 +17,8 @@
 	}: Props = $props();
 
 	function get_seed_data() {
-		possible_seeds = [new Seed(seed_data[seed])];
+		const foundSeed = seed_data.filter((s) => s[0] === seed).at(0);
+		possible_seeds = foundSeed ? [new Seed(foundSeed)] : [];
 		searched = true;
 	}
 
