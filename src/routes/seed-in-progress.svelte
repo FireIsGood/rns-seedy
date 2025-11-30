@@ -30,6 +30,10 @@
 	let item_4_id = $derived(name_to_id(item_4));
 	let item_5_id = $derived(name_to_id(item_5));
 
+	let area_1 = $state('');
+	let area_2 = $state('');
+	let area_3 = $state('');
+
 	let gem_1 = $state('');
 	let gem_2 = $state('');
 	let gem_3 = $state('');
@@ -48,6 +52,13 @@
 				seed[8] === item_3_id &&
 				seed[9] === item_4_id &&
 				seed[10] === item_5_id;
+			if (!all_items_match) return false;
+
+			const areasMatch = [area_1, area_2, area_3].every(
+				(id, index) => id === '' || seed.at(index + 1) === id // Blank = Match any
+			);
+			if (!areasMatch) return false;
+
 			// Items and prices are adjacent so index are every 2
 			// Optionally can be ignored
 			const all_gems_match =
@@ -55,10 +66,9 @@
 				(gem_2 === '' || seed[44] === gem_2_id) &&
 				(gem_3 === '' || seed[46] === gem_3_id) &&
 				(gem_4 === '' || seed[48] === gem_4_id);
-			if (all_items_match && all_gems_match) {
-				return true;
-			}
-			return false;
+			if (!all_gems_match) return false;
+
+			return true;
 		});
 
 		possible_seeds = [...matched_seeds.map((s) => new Seed(s))];
@@ -81,6 +91,13 @@
 	}
 
 	const items = itemList.map((item) => ({ value: item, label: item }));
+	const areas = [
+		{ value: 'hw_nest', label: "Scholar's Nest (Crows)" },
+		{ value: 'hw_arsenal', label: "King's Arsenal (Wolves)" },
+		{ value: 'hw_lighthouse', label: 'Red Darkhosue (Dragons)' },
+		{ value: 'hw_streets', label: 'Churchmouse Streets (Mice)' },
+		{ value: 'hw_lakeside', label: 'Emerald Lakeside (Frogs)' }
+	];
 	const gems = ['Opal', 'Sapphire', 'Ruby', 'Garnet', 'Emerald'].map((item) => ({
 		value: item,
 		label: item
@@ -99,7 +116,8 @@
 		<h3>Usage</h3>
 		<p>
 			Enter first chest's items and press Search to find all future items. You can optionally add
-			the first shop's gems to find out what the rest of the run's gems will be.
+			the first shop's gems or an area to find out what the rest of the run's gems and areas will
+			be.
 		</p>
 		<p>
 			The first chest is read counterclockwise starting from the top left. You can also press the
@@ -120,6 +138,17 @@
 				<Combobox type="single" {items} bind:value={item_4} />
 				<p class="combobox-label">Item 5</p>
 				<Combobox type="single" {items} bind:value={item_5} />
+			</div>
+		</fieldset>
+		<fieldset class="input-area">
+			<legend>Areas</legend>
+			<div class="combobox-aligned-input">
+				<p class="combobox-label">Area 1</p>
+				<Combobox type="single" items={areas} bind:value={area_1} />
+				<p class="combobox-label">Area 2</p>
+				<Combobox type="single" items={areas} bind:value={area_2} />
+				<p class="combobox-label">Area 3</p>
+				<Combobox type="single" items={areas} bind:value={area_3} />
 			</div>
 		</fieldset>
 		<fieldset class="input-area">
