@@ -955,6 +955,7 @@ export type AreaName = [
 	'hw_lighthouse',
 	'hw_streets',
 	'hw_lakeside',
+	'extra_outskirts',
 	'extra_pale_keep'
 ][number];
 
@@ -1093,6 +1094,7 @@ const areaColorMap: Record<AreaName, string> = {
 	hw_lighthouse: 'ruby',
 	hw_streets: 'garnet',
 	hw_lakeside: 'emerald',
+	extra_outskirts: 'white',
 	extra_pale_keep: 'white'
 };
 

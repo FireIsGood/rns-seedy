@@ -18,7 +18,7 @@
 	let { seed, playerCount = $bindable() }: Props = $props();
 </script>
 
-{#snippet area(name: string)}
+{#snippet area(name: AreaName)}
 	<div class="area">
 		<img
 			width="100"
@@ -27,7 +27,7 @@
 			src={`images/areas/${area_to_icon(name)}.webp`}
 			alt="Area icon"
 		/>
-		<p>{area_to_name(name)}</p>
+		<p data-gem={area_to_color(name)}>{area_to_name(name)}</p>
 	</div>
 {/snippet}
 
