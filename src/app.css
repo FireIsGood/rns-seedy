@@ -136,13 +136,14 @@ button {
 	border: var(--border-size-2) solid var(--surface-3);
 	transition: border-color 100ms;
 	&:hover {
+		background-color: color-mix(in lch, var(--surface-4), transparent 95%);
 		border-color: color-mix(in lch, var(--surface-3), rgb(from var(--surface-1) r g b) 20%);
 	}
 	&:active {
 		border-color: color-mix(in lch, var(--surface-3), rgb(from var(--surface-1) r g b) 30%);
 	}
 	&:disabled {
-		background-color: color-mix(in lch, var(--surface-4), transparent 90%);
+		background-color: color-mix(in lch, var(--surface-4), transparent 80%);
 		border-color: color-mix(in lch, var(--surface-3), rgb(from var(--surface-4) r g b) 30%);
 		cursor: not-allowed;
 	}
@@ -165,4 +166,35 @@ input:not([type='button'], [type='submit'], [type='reset']) {
 	html {
 		scrollbar-gutter: stable;
 	}
+}
+
+/* non-specific page styles */
+
+.page-title {
+	text-align: center;
+	max-inline-size: unset;
+	padding-bottom: 1em;
+}
+
+.columns {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+	column-gap: 2rem;
+}
+
+.input-section {
+	position: relative;
+}
+
+.input-area {
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.button-group {
+	display: flex;
+	gap: 1rem;
 }

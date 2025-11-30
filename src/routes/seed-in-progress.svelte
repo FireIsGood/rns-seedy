@@ -87,7 +87,7 @@
 	}));
 </script>
 
-<h2 class="page-title">Seed-In-Progress finder</h2>
+<h2 class="page-title">Seed-In-Progress Finder</h2>
 <div class="columns">
 	<section class="prose">
 		<h3>About</h3>
@@ -145,30 +145,6 @@
 </div>
 
 <style>
-	.page-title {
-		text-align: center;
-		max-inline-size: unset;
-		padding-bottom: 1em;
-	}
-
-	.columns {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-		column-gap: 2rem;
-	}
-
-	.input-section {
-		position: relative;
-	}
-
-	.input-area {
-		padding: 0.5rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		margin-bottom: 0.75rem;
-	}
-
 	.combobox-label {
 		font-size: var(--font-size-1);
 	}
@@ -178,10 +154,5 @@
 		grid-template-columns: auto 1fr;
 		align-items: center;
 		gap: var(--size-2) 1ch;
-	}
-
-	.button-group {
-		display: flex;
-		gap: 1rem;
 	}
 </style>
