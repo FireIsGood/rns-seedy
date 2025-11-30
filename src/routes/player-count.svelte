@@ -104,14 +104,11 @@
 		-moz-user-select: none;
 		-webkit-user-select: none;
 		-ms-user-select: none;
-		transition: scale 200ms ease;
 
 		&:hover {
-			scale: 0.95;
 			filter: drop-shadow(0 0 4px var(--bnuuy-color));
 		}
 		&:hover:active {
-			scale: 0.925;
 			filter: drop-shadow(0 0 2px var(--bnuuy-color));
 		}
 	}
