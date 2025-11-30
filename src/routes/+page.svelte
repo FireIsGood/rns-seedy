@@ -6,11 +6,12 @@
 	import SeedInProgress from './seed-in-progress.svelte';
 
 	onMount(async () => {
-		seed_data = (await import('$lib/seed-data.json')).default;
+		seed_data = await (await fetch('data/seed-data.json')).json(); // Static assets makes the IDE happy
 		loading = false;
 	});
 
 	// Cannot be a rune for performance reasons...
+	// svelte-ignore non_reactive_update
 	let seed_data: any[] = [];
 
 	function loadExampleSeed() {
