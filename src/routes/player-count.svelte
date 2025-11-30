@@ -154,7 +154,7 @@
 		color: var(--bnuuy-color);
 		animation: slide-in 100ms var(--ease-1) forwards;
 	}
-	:global([data-state='closed']) {
+	.player-count :global([data-state='closed']) {
 		animation: slide-out 100ms var(--ease-1) forwards;
 	}
 
