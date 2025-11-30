@@ -23,7 +23,7 @@
 				() => {
 					jumping = false;
 				},
-				300 + 60 * newValue
+				250 + 60 * newValue
 			) as unknown as number; // lmao
 		});
 	}
@@ -57,7 +57,7 @@
 									class="player"
 									class:inactive={item.state === 'inactive'}
 									class:jumping={jumping && item.index < value}
-									style={`--bnuuy-color: var(--color-${bnuuyColors.at(item.index)}); --bnuuy-index: ${item.index}`}
+									style={`--bnuuy-color: var(--color-${bnuuyColors.at(item.index)}); --bnuuy-index: ${value - item.index}`}
 								/>
 							</Tooltip.Trigger>
 							<Tooltip.Portal>
@@ -114,7 +114,7 @@
 	}
 
 	.jumping {
-		animation: jumpy 300ms calc(60ms * var(--bnuuy-index)) linear;
+		animation: jumpy 250ms calc(60ms * var(--bnuuy-index)) linear;
 	}
 
 	.inactive {
@@ -125,20 +125,14 @@
 		0% {
 			translate: 0 0;
 		}
-		15% {
-			translate: 0 2px;
-		}
 		20% {
-			translate: 0 2px;
+			translate: 0 -4px;
 		}
-		40% {
+		50% {
 			translate: 0 -5px;
 		}
 		60% {
 			translate: 0 -5px;
-		}
-		80% {
-			translate: 0 -3px;
 		}
 		100% {
 			translate: 0 0;
