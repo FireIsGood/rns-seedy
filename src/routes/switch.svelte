@@ -13,10 +13,10 @@
 </script>
 
 <div class="switch">
+	<Label.Root for={id}><p>{labelText}</p></Label.Root>
 	<Switch.Root bind:checked bind:ref {id} {...restProps} class="switch-root">
 		<Switch.Thumb class="switch-thumb" />
 	</Switch.Root>
-	<Label.Root for={id}>{labelText}</Label.Root>
 </div>
 
 <style>
@@ -27,8 +27,8 @@
 	}
 
 	:global(:root .switch-root) {
-		width: 60px;
-		height: 36px;
+		width: 3.25em;
+		height: 2rem;
 		display: inline-flex;
 		padding: 0 2px;
 		background-color: color-mix(in lch, var(--text-2), var(--surface-1) 90%);
@@ -42,8 +42,8 @@
 	}
 
 	:global(.switch-thumb) {
-		width: 30px;
-		height: 30px;
+		width: calc(2rem - 6px);
+		height: calc(2rem - 6px);
 		background-color: var(--text-2);
 		border-radius: var(--radius-round);
 		transition:
@@ -52,7 +52,7 @@
 		flex-shrink: 0;
 
 		&[data-state='checked'] {
-			translate: 24px 0;
+			translate: calc(3.25rem - 2rem - 2px) 0;
 			box-shadow:
 				0 0 8px hsl(var(--shadow-color) / 50%),
 				0 0 4px hsl(var(--shadow-color) / 20%);

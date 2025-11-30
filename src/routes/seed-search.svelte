@@ -206,6 +206,9 @@
 
 <style>
 	.switch {
+		display: flex;
+		justify-content: right;
+		text-align: right;
 		margin-bottom: 0.75rem;
 	}
 </style>

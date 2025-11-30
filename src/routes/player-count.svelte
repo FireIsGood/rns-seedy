@@ -82,6 +82,9 @@
 </div>
 
 <style>
+	p {
+		text-align: right;
+	}
 	.player-count {
 		display: flex;
 		align-items: center;
