@@ -47,7 +47,8 @@
 
 	footer ul {
 		display: flex;
-		gap: var(--size-2);
+		flex-wrap: wrap;
+		gap: var(--size-1) var(--size-2);
 		justify-content: center;
 		padding: 0;
 		list-style: none;
@@ -62,6 +63,23 @@
 			&:not(:last-child)::after {
 				content: '\00b7';
 				padding-inline-start: var(--size-2);
+			}
+		}
+	}
+
+	@media (width < 800px) {
+		:root footer ul {
+			justify-content: flex-start;
+			text-align: initial;
+			padding-bottom: var(--size-2);
+			list-style: '\2022  ';
+			padding-inline-start: 2ch;
+
+			& li {
+				display: list-item;
+			}
+			& li::after {
+				content: unset;
 			}
 		}
 	}
