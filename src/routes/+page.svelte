@@ -58,8 +58,10 @@
 		<SeedSearch {seed_data} bind:possible_seeds={found_seeds} bind:searched bind:loading />
 	</Tabs.Content>
 </Tabs.Root>
-<div class="result-header">
-	<h2>Results</h2>
+<div class="results-header">
+	<h2>
+		Results {#if searched > 0}<span class="results-count">({found_seeds.length})</span>{/if}
+	</h2>
 	<PlayerCount bind:value={playerCount} />
 </div>
 {#if found_seeds.length > 0}
@@ -87,7 +89,8 @@
 		gap: 1rem;
 		margin-block: var(--size-4);
 	}
-	.result-header {
+
+	.results-header {
 		margin-top: 2.5rem;
 		display: flex;
 		flex-wrap: wrap;
@@ -95,6 +98,19 @@
 		margin-bottom: var(--size-2);
 		justify-content: space-between;
 		align-items: center;
+
+		h2 {
+			display: flex;
+			align-items: center;
+			gap: 0.25em;
+		}
+	}
+
+	.results-count {
+		font-weight: var(--font-weight-6);
+		font-size: var(--font-size-5);
+		color: var(--text-2);
+		display: inline-block;
 	}
 
 	:global(.tab-list) {
