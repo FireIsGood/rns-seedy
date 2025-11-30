@@ -63,6 +63,9 @@ body {
 		#0000 calc(100vh - 20rem),
 		var(--surface-overlay) calc(100vh + 10rem)
 	);
+
+	/* Overlay thing */
+	padding-right: 0 !important;
 }
 
 header,
