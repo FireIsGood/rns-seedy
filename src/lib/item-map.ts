@@ -958,6 +958,102 @@ export type AreaName = [
 	'extra_pale_keep'
 ][number];
 
+// The monster type :3
+export type SeedData = [
+	id: number,
+	area1: AreaName,
+	area2: AreaName,
+	area3: AreaName,
+	area4: AreaName,
+	area5: AreaName,
+	item1_1: number, // Chest 1
+	item1_2: number,
+	item1_3: number,
+	item1_4: number,
+	item1_5: number,
+	item2_1: number, // Chest 2
+	item2_2: number,
+	item2_3: number,
+	item2_4: number,
+	item2_5: number,
+	item3_1: number, // Chest 3
+	item3_2: number,
+	item3_3: number,
+	item3_4: number,
+	item3_5: number,
+	item4_1: number, // Chest 4
+	item4_2: number,
+	item4_3: number,
+	item4_4: number,
+	item4_5: number,
+	item5_1: number, // Chest 5
+	item5_2: number,
+	item5_3: number,
+	item5_4: number,
+	item5_5: number,
+	item6_1: number, // Chest 6
+	item6_2: number,
+	item6_3: number,
+	item6_4: number,
+	item6_5: number,
+	shop_1_p_1_id: number, // Shop 1, potion IDs
+	shop_1_p_2_id: number,
+	shop_1_p_3_id: number,
+	shop_1_p_1_price: number, // Potion prices
+	shop_1_p_2_price: number,
+	shop_1_p_3_price: number,
+	shop_1_g_1_id: number, // Gems, prices
+	shop_1_g_1_price: number,
+	shop_1_g_2_id: number,
+	shop_1_g_2_price: number,
+	shop_1_g_3_id: number,
+	shop_1_g_3_price: number,
+	shop_1_g_4_id: number,
+	shop_1_g_4_price: number,
+	shop_2_p_1_id: number, // Shop 2, potion IDs
+	shop_2_p_2_id: number,
+	shop_2_p_3_id: number,
+	shop_2_p_1_price: number, // Potion prices
+	shop_2_p_2_price: number,
+	shop_2_p_3_price: number,
+	shop_2_g_1_id: number, // Gems, prices
+	shop_2_g_1_price: number,
+	shop_2_g_2_id: number,
+	shop_2_g_2_price: number,
+	shop_2_g_3_id: number,
+	shop_2_g_3_price: number,
+	shop_2_g_4_id: number,
+	shop_2_g_4_price: number,
+	shop_3_p_1_id: number, // Shop 3, potion IDs
+	shop_3_p_2_id: number,
+	shop_3_p_3_id: number,
+	shop_3_p_1_price: number, // Potion prices
+	shop_3_p_2_price: number,
+	shop_3_p_3_price: number,
+	shop_3_g_1_id: number, // Gems, prices
+	shop_3_g_1_price: number,
+	shop_3_g_2_id: number,
+	shop_3_g_2_price: number,
+	shop_3_g_3_id: number,
+	shop_3_g_3_price: number,
+	shop_3_g_4_id: number,
+	shop_3_g_4_price: number,
+	shop_4_p_1_id: number, // Shop 4, potion IDs
+	shop_4_p_2_id: number,
+	shop_4_p_3_id: number,
+	shop_4_p_1_price: number, // Potion prices
+	shop_4_p_2_price: number,
+	shop_4_p_3_price: number,
+	shop_4_g_1_id: number, // Gems, prices
+	shop_4_g_1_price: number,
+	shop_4_g_2_id: number,
+	shop_4_g_2_price: number,
+	shop_4_g_3_id: number,
+	shop_4_g_3_price: number,
+	shop_4_g_4_id: number,
+	shop_4_g_4_price: number
+];
+
 export type GemName = ['white', 'opal', 'sapphire', 'ruby', 'garnet', 'emerald'][number];
 
 const areaMap = {

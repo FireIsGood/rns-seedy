@@ -2,6 +2,7 @@
 	import PlayerCount from './player-count.svelte';
 	import SeedDisplay from './seed-display.svelte';
 	import { Seed } from '$lib/seed';
+	import type { SeedData } from '$lib/item-map';
 	import { onMount } from 'svelte';
 	import SeedInProgress from './seed-in-progress.svelte';
 
@@ -12,7 +13,7 @@
 
 	// Cannot be a rune for performance reasons...
 	// svelte-ignore non_reactive_update
-	let seed_data: any[] = [];
+	let seed_data: SeedData[] = [];
 
 	function loadExampleSeed() {
 		found_seeds = [new Seed(seed_data[0])];

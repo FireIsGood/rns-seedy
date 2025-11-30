@@ -1,4 +1,5 @@
 import chest_data from '$lib/chest-data.json'; // slightly smaller BOYE
+import type { SeedData } from '$lib/item-map';
 
 import {
 	area_to_name,
@@ -39,12 +40,12 @@ const playerCountToLootMap = {
 export class Seed {
 	id: number;
 	shops: Shop[];
-	areas: string[];
+	areas: AreaName[];
 	chests: Chest[];
 
-	constructor(seed: Array<string | number>) {
-		this.id = <number>seed[0];
-		this.areas = [0, 1, 2, 3, 4].map((i) => (<string[]>seed)[i + 1]);
+	constructor(seed: SeedData) {
+		this.id = seed[0];
+		this.areas = [1, 2, 3, 4, 5].map((i) => <AreaName>seed[i]);
 
 		const seedChests = (chest_data ?? []).find((chest) => chest[0] === this.id)?.slice(1);
 		this.chests = [0, 1, 2, 3, 4, 5].map((i) => ({
