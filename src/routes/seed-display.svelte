@@ -13,9 +13,10 @@
 	type Props = {
 		seed: Seed;
 		playerCount: number;
+		compact: boolean;
 	};
 
-	let { seed, playerCount = $bindable() }: Props = $props();
+	let { seed, playerCount = $bindable(), compact }: Props = $props();
 </script>
 
 {#snippet area(name: AreaName)}
@@ -32,9 +33,9 @@
 {/snippet}
 
 {#snippet chest(index: number, areaName: string | undefined = undefined)}
-	<div class="chest-label">
-		<p>{areaName ?? `Chest ${index}`}</p>
-		<p>
+	<div class="chest-label-bar">
+		<p class="chest-label">{areaName ?? `Chest ${index}`}</p>
+		<p class="chest-color-label">
 			<span data-gem={seed.chest(index)?.name}
 				>{seed.chest(index)?.label} chest{#if seed.chest(index)}&thinsp;{@render inlineIcon(
 						`images/jewels/spr_item_jewels_${seed.chest(index)?.spriteId}.png`
@@ -103,13 +104,15 @@
 			<div class="potion-items">
 				{#each seed.shop(index)?.potions as potion}
 					<div class="item">
-						<img
-							width="135"
-							height="135"
-							class="item-icon"
-							src={`images/potions/${id_to_potion_icon(potion.id)}.png`}
-							alt="Potion icon"
-						/>
+						{#if !compact}
+							<img
+								width="135"
+								height="135"
+								class="item-icon"
+								src={`images/potions/${id_to_potion_icon(potion.id)}.png`}
+								alt="Potion icon"
+							/>
+						{/if}
 						<div class="item-text">
 							<p class="potion-name">{potion.name}</p>
 							<p><span class="item-price">{@render coin()} {potion.price}</span></p>
@@ -146,7 +149,7 @@
 	<img class="inline-icon" {src} {alt} />
 {/snippet}
 
-<div class="seed-entry">
+<div class="seed-entry" class:compact>
 	<h3>Seed {seed.id} ({playerCount}p)</h3>
 	<h4>
 		Areas {@render inlineIcon(`images/areas/${area_to_icon('extra_moonlit_prescipice')}.webp`)}
@@ -208,7 +211,7 @@
 		margin-block: var(--size-2) var(--size-1);
 	}
 
-	.chest-label {
+	.chest-label-bar {
 		display: flex;
 		justify-content: space-between;
 	}
@@ -422,5 +425,49 @@
 	}
 	[data-gem='opal'] {
 		color: var(--color-opal);
+	}
+
+	.compact {
+		&.seed-entry {
+			padding: var(--size-1) var(--size-2);
+		}
+
+		h3 {
+			font-size: var(--font-size-4);
+		}
+		h4 {
+			font-size: var(--font-size-2);
+			margin-block: var(--size-1) 0;
+		}
+
+		& img:not(.coin) {
+			display: none;
+		}
+
+		:global(.area-arrow) {
+			font-size: 1.25rem;
+		}
+
+		.chest-label,
+		.chest-color-label,
+		.shop-label {
+			font-size: var(--font-size-1);
+			margin: 0;
+		}
+
+		.chest {
+			margin-bottom: var(--size-1);
+			padding: var(--size-1);
+		}
+
+		.permanent-items,
+		.potion-items,
+		.gem-list {
+			padding: var(--size-1) var(--size-2);
+		}
+
+		.item-text p {
+			display: inline;
+		}
 	}
 </style>

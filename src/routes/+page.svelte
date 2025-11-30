@@ -9,6 +9,7 @@
 	import { Tabs } from 'bits-ui';
 	import SeedSearch from './seed-search.svelte';
 	import Pagination from './pagination.svelte';
+	import Switch from './switch.svelte';
 
 	onMount(async () => {
 		seed_data = await (await fetch('data/seed-data.json')).json(); // Static assets makes the IDE happy
@@ -36,6 +37,8 @@
 
 	let showPagination = $derived(found_seeds.length > perPage);
 	let seedWindow = $derived(found_seeds.slice(perPage * (seedPage - 1), perPage * seedPage));
+
+	let compactSeeds = $state(false);
 </script>
 
 <Tabs.Root value="progress">
@@ -62,7 +65,11 @@
 	<h2>
 		Results {#if searched}<span class="results-count">({found_seeds.length})</span>{/if}
 	</h2>
-	<PlayerCount bind:value={playerCount} />
+	<div class="results-options">
+		<div class="results-options-bg"></div>
+		<Switch labelText="Compact" bind:checked={compactSeeds} />
+		<PlayerCount bind:value={playerCount} />
+	</div>
 </div>
 {#if found_seeds.length > 0}
 	{#if showPagination}
@@ -70,7 +77,7 @@
 	{/if}
 	<div class="seed-list">
 		{#each seedWindow as seed}
-			<SeedDisplay {seed} {playerCount} />
+			<SeedDisplay {seed} {playerCount} compact={compactSeeds} />
 		{/each}
 	</div>
 	{#if showPagination}
@@ -98,6 +105,7 @@
 		margin-bottom: var(--size-2);
 		justify-content: space-between;
 		align-items: center;
+		overflow-x: clip;
 
 		h2 {
 			display: flex;
@@ -111,6 +119,42 @@
 		font-size: var(--font-size-5);
 		color: var(--text-2);
 		display: inline-block;
+	}
+
+	.results-options {
+		display: flex;
+		gap: var(--size-3);
+		position: relative;
+
+		--c: color-mix(in lch, var(--surface-3), transparent 20%);
+
+		.results-options-bg::before {
+			content: '';
+			position: absolute;
+			--overhang-x: 80px;
+			--overhang-y: 4px;
+			width: calc(100% + var(--overhang-x));
+			left: calc(var(--overhang-x) * -1);
+			top: calc(var(--overhang-y) * -1);
+			height: calc(100% + var(--overhang-y) * 2);
+			background-image: linear-gradient(
+				-45deg,
+				transparent,
+				transparent 18.3707517568%,
+				var(--c) 0,
+				var(--c) 31.6292482432%,
+				transparent 0,
+				transparent 68.3707517568%,
+				var(--c) 0,
+				var(--c) 81.6292482432%,
+				transparent 0,
+				transparent
+			);
+			background-repeat: repeat;
+			background-size: 0.75rem 0.75rem;
+			mask-image: linear-gradient(150deg, transparent, transparent 5%, black 30%, black);
+			z-index: -1;
+		}
 	}
 
 	:global(.tab-list) {

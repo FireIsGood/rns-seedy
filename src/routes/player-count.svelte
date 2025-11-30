@@ -121,7 +121,7 @@
 	}
 
 	.inactive {
-		opacity: 0.25;
+		filter: brightness(0.5);
 	}
 
 	@keyframes jumpy {
