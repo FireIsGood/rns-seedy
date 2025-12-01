@@ -11,6 +11,7 @@
 	import SeedSearch from './seed-search.svelte';
 	import Pagination from './pagination.svelte';
 	import Switch from './switch.svelte';
+	import WizardSpinner from './wizard-spinner.svelte';
 
 	onMount(async () => {
 		seed_data = await (await fetch('data/seed-data.json')).json(); // Static assets makes the IDE happy
@@ -77,7 +78,7 @@
 </Tabs.Root>
 <div class="results-header">
 	<h2>
-		Results {#if searched || searching}<span class="results-count"
+		Results {#if searched}<span class="results-count"
 				>({found_seeds.length}{#if overSearchLimit}+{:else if showPercentage}&nbsp;:&nbsp;{(
 						(found_seeds.length * 100) /
 						seed_data.length
@@ -105,7 +106,7 @@
 {:else}
 	<div class="search-loader">
 		{#if searching}
-			<img src="images/wizard_spin.gif" width="80" height="100" alt="Wizard Rabbit spinning" />
+			<WizardSpinner />
 			<p>Searching...</p>
 		{:else if searched}
 			<p>No seed found...</p>

@@ -956,7 +956,8 @@ export type AreaName = [
 	'hw_streets',
 	'hw_lakeside',
 	'extra_outskirts',
-	'extra_pale_keep'
+	'extra_pale_keep',
+	'extra_moonlit_prescipice'
 ][number];
 
 // The monster type :3
@@ -1064,7 +1065,8 @@ const areaMap = {
 	hw_streets: 'Churchmouse Streets',
 	hw_lakeside: 'Emerald Lakeside',
 	extra_outskirts: 'Kingdom Outskirts',
-	extra_pale_keep: 'Moonlit Prescipice'
+	extra_pale_keep: 'Moonlit Prescipice',
+	extra_moonlit_prescipice: 'Moonlit Prescipice'
 };
 
 export function area_to_name(area: string): string {
@@ -1095,7 +1097,8 @@ const areaColorMap: Record<AreaName, string> = {
 	hw_streets: 'garnet',
 	hw_lakeside: 'emerald',
 	extra_outskirts: 'white',
-	extra_pale_keep: 'white'
+	extra_pale_keep: 'white',
+	extra_moonlit_prescipice: 'white'
 };
 
 export function area_to_color(area: AreaName): string {

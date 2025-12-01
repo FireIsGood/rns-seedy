@@ -2,7 +2,6 @@ import chest_data from '$lib/chest-data.json'; // slightly smaller BOYE
 import type { SeedData } from '$lib/item-map';
 
 import {
-	area_to_name,
 	chest_to_color,
 	chest_to_color_label,
 	id_to_gem,
