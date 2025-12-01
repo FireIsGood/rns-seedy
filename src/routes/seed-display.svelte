@@ -22,7 +22,7 @@
 	};
 
 	async function copySeedLink() {
-		const seedUrl = new URL(window.location.origin);
+		const seedUrl = new URL(window.location.href);
 		seedUrl.searchParams.set('seed', String(seed.id));
 
 		const possibleBarColors: GemName[] = ['white', 'opal', 'sapphire', 'ruby', 'garnet', 'emerald'];
