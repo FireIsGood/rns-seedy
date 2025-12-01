@@ -23,9 +23,7 @@
 	let seed_data: SeedData[] = [];
 
 	let loading = $state(true);
-	let searching = $state(false);
 	let searched = $state(false);
-	let fullSearch = $state(false);
 	let playerCount = $state(4);
 
 	let seedPage = $state(1);
@@ -66,20 +64,13 @@
 		<SeedSelect {seed_data} bind:possible_seeds={found_seeds} bind:searched bind:loading />
 	</Tabs.Content>
 	<Tabs.Content value="search">
-		<SeedSearch
-			{seed_data}
-			bind:possible_seeds={found_seeds}
-			bind:searched
-			bind:loading
-			bind:searching
-			bind:fullSearch
-		/>
+		<SeedSearch {seed_data} bind:possible_seeds={found_seeds} bind:searched bind:loading />
 	</Tabs.Content>
 </Tabs.Root>
 <div class="results-header">
 	<h2>
 		Results {#if searched}<span class="results-count"
-				>({found_seeds.length}{#if overSearchLimit}+{:else if showPercentage}&nbsp;:&nbsp;{(
+				>({found_seeds.length}{#if showPercentage}&nbsp;:&nbsp;{(
 						(found_seeds.length * 100) /
 						seed_data.length
 					).toFixed(2)}%{/if})</span
@@ -105,12 +96,10 @@
 	{/if}
 {:else}
 	<div class="search-loader">
-		{#if searching}
-			<WizardSpinner />
-			<p>Searching...</p>
-		{:else if searched}
+		{#if searched}
 			<p>No seed found...</p>
 		{:else}
+			<WizardSpinner />
 			<p>Search for a seed above!</p>
 		{/if}
 	</div>

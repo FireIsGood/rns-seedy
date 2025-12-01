@@ -1,15 +1,12 @@
 <script lang="ts">
-	import { type Seed } from '$lib/seed';
 	import { gem_to_id, itemList, name_to_id, type SeedData } from '$lib/item-map';
 	import Combobox from './combobox.svelte';
-	import Switch from './switch.svelte';
 
 	type Props = {
 		seed_data: SeedData[];
 		loading: boolean;
 		possible_seeds: SeedData[];
-		fullSearch?: boolean;
-		searching?: boolean;
+		searching?: boolean; // Currently not used because searches are fast!
 		searched: boolean;
 	};
 
@@ -17,7 +14,6 @@
 		seed_data,
 		loading = $bindable(true),
 		possible_seeds = $bindable([]),
-		fullSearch = $bindable(false),
 		searching = $bindable(false),
 		searched = $bindable(false)
 	}: Props = $props();
@@ -48,9 +44,6 @@
 	let gem_3_id = $derived(gem_to_id(gem_3, 2));
 	let gem_4_id = $derived(gem_to_id(gem_4, 3));
 
-	// Area searches find >5000 but item searches cap at ~3500... Compromise for performance!
-	const maxSeedSearch = 5000;
-
 	function get_seed_data() {
 		if (searching) return;
 
@@ -59,13 +52,7 @@
 		searched = false;
 
 		// Rough match for possibly matching seeds
-		let matchCount = 0;
 		const matched_seeds = seed_data.filter((seed) => {
-			// Limit the number of seeds to match to (Surely you won't be looking through over 5000 seeds...)
-			if (!fullSearch && matchCount >= maxSeedSearch) {
-				return false;
-			}
-
 			const itemMatch = [item_1_id, item_2_id, item_3_id, item_4_id, item_5_id, item_6_id].every(
 				(id, index) =>
 					id === 0 || seed.slice((index + 1) * 5 + 1, (index + 1) * 5 + 5 + 1).includes(id) // Blank = Match any
@@ -84,7 +71,6 @@
 			);
 			if (!gemsMatch) return false;
 
-			matchCount += 1;
 			return true;
 		});
 
@@ -141,10 +127,6 @@
 			chest. Also, this does not account for 1-3 player games so the results may show seeds that are
 			not possible.
 		</p>
-		<p>
-			The seed count is limited to 5000 for performance reasons, though you can enable a full search
-			if you are patient&mdash;it will freeze your browser for a bit.
-		</p>
 		<h3>Usage</h3>
 		<p>
 			To find the seed behind someone's run, enter every item that someone has picked in order that
@@ -198,13 +180,6 @@
 				<Combobox type="single" items={gems} bind:value={gem_4} disabled={searching} />
 			</div>
 		</fieldset>
-		<div class="switch">
-			<Switch
-				labelText={fullSearch ? 'Show ALL seeds (LAGGY)' : `Show first ${maxSeedSearch} seeds`}
-				disabled={searching}
-				bind:checked={fullSearch}
-			/>
-		</div>
 		<div class="button-group">
 			<button class="action-button" disabled={loading || searching} onclick={get_seed_data}
 				>Search</button
@@ -217,12 +192,3 @@
 		</div>
 	</section>
 </div>
-
-<style>
-	.switch {
-		display: flex;
-		justify-content: right;
-		text-align: right;
-		margin-bottom: 0.75rem;
-	}
-</style>
