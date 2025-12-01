@@ -1,11 +1,5 @@
 import chest_data from '$lib/chest-data.json'; // slightly smaller BOYE
 import type { SeedData } from '$lib/item-map';
-import { browser } from '$app/environment';
-
-// Page seed data for use elsewhere
-const urlParams = browser ? new URLSearchParams(window.location.search) : undefined;
-const urlSeedString = urlParams?.get('seed') ?? null;
-export const urlSeed = urlSeedString ? Number(urlSeedString) : null;
 
 import {
 	area_to_name,
@@ -43,94 +37,92 @@ const playerCountToLootMap = {
 	4: 5
 };
 
-export class Seed {
+export type Seed = {
 	id: number;
 	shops: Shop[];
 	areas: AreaName[];
 	chests: Chest[];
+};
 
-	constructor(seed: SeedData) {
-		this.id = seed[0];
-		this.areas = [1, 2, 3, 4, 5].map((i) => <AreaName>seed[i]);
+export function createSeed(seedData: SeedData): Seed {
+	const id = seedData[0];
+	const areas = [1, 2, 3, 4, 5].map((i) => <AreaName>seedData[i]);
 
-		const seedChests = (chest_data ?? []).find((chest) => chest[0] === this.id)?.slice(1);
-		this.chests = [0, 1, 2, 3, 4, 5].map((i) => ({
-			label: chest_to_color_label(seedChests?.at(i) ?? 2),
-			name: chest_to_color(seedChests?.at(i) ?? 2),
-			colorId: seedChests?.at(i),
-			spriteId: (seedChests?.at(i) ?? 2) - 2,
-			items: (<number[]>seed)
-				.slice(i * 5 + 6, i * 5 + 11)
-				.map((id) => ({ id, name: id_to_name(id) }))
+	const seedChests = (chest_data ?? []).find((chest) => chest[0] === id)?.slice(1);
+	const chests = [0, 1, 2, 3, 4, 5].map((i) => ({
+		label: chest_to_color_label(seedChests?.at(i) ?? 2),
+		name: chest_to_color(seedChests?.at(i) ?? 2),
+		colorId: seedChests?.at(i),
+		spriteId: (seedChests?.at(i) ?? 2) - 2,
+		items: (<number[]>seedData)
+			.slice(i * 5 + 6, i * 5 + 11)
+			.map((id) => ({ id, name: id_to_name(id) }))
+	}));
+
+	const shops = [0, 1, 2, 3]
+		.map((i) => (<number[]>seedData).slice(i * 14 + 36, i * 14 + 50))
+		.map((shop_thing) => ({
+			potions: [0, 1, 2].map((i) => ({
+				name: id_to_potion(shop_thing[i]),
+				price: shop_thing[i + 3],
+				id: shop_thing[i]
+			})),
+			gems: [0, 1, 2, 3].map((i) => ({
+				name: id_to_gem(shop_thing[2 * i + 6]),
+				price: shop_thing[2 * i + 7],
+				key: id_to_gem_key(shop_thing[2 * i + 6]),
+				id: shop_thing[2 * i + 6]
+			}))
 		}));
+	return {
+		id,
+		shops,
+		areas,
+		chests
+	};
+}
 
-		this.shops = [0, 1, 2, 3]
-			.map((i) => (<number[]>seed).slice(i * 14 + 36, i * 14 + 50))
-			.map((shop_thing) => ({
-				potions: [0, 1, 2].map((i) => ({
-					name: id_to_potion(shop_thing[i]),
-					price: shop_thing[i + 3],
-					id: shop_thing[i]
-				})),
-				gems: [0, 1, 2, 3].map((i) => ({
-					name: id_to_gem(shop_thing[2 * i + 6]),
-					price: shop_thing[2 * i + 7],
-					key: id_to_gem_key(shop_thing[2 * i + 6]),
-					id: shop_thing[2 * i + 6]
-				}))
-			}));
-	}
+export function getSeedChest(
+	seed: Seed,
+	index: number,
+	playerCount: number = 4
+): Chest | undefined {
+	if (!(playerCount in playerCountToLootMap)) return undefined;
 
-	chest(index: number, playerCount: number = 4): Chest | undefined {
-		if (!(playerCount in playerCountToLootMap)) return undefined;
+	const chest = seed.chests.at(index);
+	if (!chest) return undefined;
 
-		const chest = this.chests.at(index);
-		if (!chest) return undefined;
+	const alwaysFullChest = index === 0 || index === 1;
+	if (playerCount === 4 || alwaysFullChest) return chest;
 
-		const alwaysFullChest = index === 0 || index === 1;
-		if (playerCount === 4 || alwaysFullChest) return chest;
-
-		// 1-3 players have less items and white chests use the same stock
-		const itemCount = playerCountToLootMap[playerCount as keyof typeof playerCountToLootMap];
-		if (chest.colorId !== 2) {
-			return Object.assign(structuredClone(chest), {
-				items: chest.items.slice(0, itemCount)
-			});
-		}
-
-		// White chests are rolled in order together so seeing 3/5 items means your
-		// next 3 will reuse the remaining 2, etc.
-		//
-		// To find a given white chest's loot given this fact, we can count the
-		// prior chests and then filter to the window of values in the list of all
-		// white chest loot.
-		//
-		// First two chests always show 5 so we ignore them for this calculation
-		const priorWhiteChestCount = this.chests
-			.slice(0, index)
-			.filter((c, i) => i !== 0 && i !== 1 && c.colorId === 2).length;
-		const whiteChests = this.chests.filter((c, i) => i !== 0 && i !== 1 && c.colorId === 2);
-		const whiteChestItems = whiteChests.flatMap((c) => c.items);
-
-		const thisChestItems = whiteChestItems.slice(
-			priorWhiteChestCount * itemCount,
-			priorWhiteChestCount * itemCount + itemCount
-		);
-
+	// 1-3 players have less items and white chests use the same stock
+	const itemCount = playerCountToLootMap[playerCount as keyof typeof playerCountToLootMap];
+	if (chest.colorId !== 2) {
 		return Object.assign(structuredClone(chest), {
-			items: thisChestItems
+			items: chest.items.slice(0, itemCount)
 		});
 	}
 
-	shop(index: number): Shop | undefined {
-		return this.shops.at(index);
-	}
+	// White chests are rolled in order together so seeing 3/5 items means your
+	// next 3 will reuse the remaining 2, etc.
+	//
+	// To find a given white chest's loot given this fact, we can count the
+	// prior chests and then filter to the window of values in the list of all
+	// white chest loot.
+	//
+	// First two chests always show 5 so we ignore them for this calculation
+	const priorWhiteChestCount = seed.chests
+		.slice(0, index)
+		.filter((c, i) => i !== 0 && i !== 1 && c.colorId === 2).length;
+	const whiteChests = seed.chests.filter((c, i) => i !== 0 && i !== 1 && c.colorId === 2);
+	const whiteChestItems = whiteChests.flatMap((c) => c.items);
 
-	areaName(index: number): AreaName {
-		return this.areas[index] as AreaName;
-	}
+	const thisChestItems = whiteChestItems.slice(
+		priorWhiteChestCount * itemCount,
+		priorWhiteChestCount * itemCount + itemCount
+	);
 
-	areaTitle(index: number): string {
-		return area_to_name(this.areas[index]);
-	}
+	return Object.assign(structuredClone(chest), {
+		items: thisChestItems
+	});
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Seed, urlSeed } from '$lib/seed';
+	import { createSeed, type Seed } from '$lib/seed';
+	import { urlSeed } from '$lib/util';
 	import type { SeedData } from '$lib/item-map';
 
 	type Props = {
@@ -18,7 +19,7 @@
 
 	function get_seed_data() {
 		const foundSeed = seed_data.filter((s) => s[0] === seed).at(0);
-		possible_seeds = foundSeed ? [new Seed(foundSeed)] : [];
+		possible_seeds = foundSeed ? [createSeed(foundSeed)] : [];
 		searched = true;
 	}
 
@@ -34,7 +35,6 @@
 	$effect(() => {
 		if (loading === false && firstLoadSearch === true) {
 			firstLoadSearch = false;
-			console.log(urlSeed, loading);
 			get_seed_data();
 		}
 	});

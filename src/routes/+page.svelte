@@ -1,7 +1,8 @@
 <script lang="ts">
 	import PlayerCount from './player-count.svelte';
 	import SeedDisplay from './seed-display.svelte';
-	import { Seed, urlSeed } from '$lib/seed';
+	import { type Seed } from '$lib/seed';
+	import { urlSeed } from '$lib/util';
 	import type { SeedData } from '$lib/item-map';
 	import { onMount } from 'svelte';
 	import SeedInProgress from './seed-in-progress.svelte';

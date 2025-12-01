@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { Seed } from '$lib/seed';
+	import { type Seed } from '$lib/seed';
 	import { gem_to_id, itemList, name_to_id, type SeedData } from '$lib/item-map';
 	import Combobox from './combobox.svelte';
 	import Switch from './switch.svelte';
+	import SeedSearchWorker from '$lib/seed-search-worker?worker';
+	import { browser } from '$app/environment';
 
 	type Props = {
 		seed_data: SeedData[];
@@ -52,6 +54,8 @@
 	const maxSeedSearch = 5000;
 
 	function get_seed_data() {
+		if (searching) return;
+
 		searching = true;
 		// Rough match for possibly matching seeds
 		let matchCount = 0;
@@ -83,7 +87,17 @@
 			return true;
 		});
 
-		possible_seeds = [...matched_seeds.map((s) => new Seed(s))];
+		seedSearchWorker?.postMessage(matched_seeds);
+	}
+
+	let seedSearchWorker: Worker | undefined;
+	if (browser) {
+		seedSearchWorker = new SeedSearchWorker();
+		seedSearchWorker.addEventListener('message', (e) => handleSearchWorker(e));
+	}
+
+	function handleSearchWorker(event: MessageEvent<Seed[]>) {
+		possible_seeds = event.data;
 		searching = false;
 		searched = true;
 	}
