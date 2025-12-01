@@ -1,14 +1,9 @@
 <script lang="ts">
 	import LightDarkSwitcher from './light-dark-switcher.svelte';
 	import '../app.css';
-	import Dialog from './Dialog.svelte';
-
+	import Loader from './loader.svelte';
+	import { browser } from '$app/environment';
 	let { children } = $props();
-
-	let dialogOpen = $state(true);
-	function confirmResponsible() {
-		dialogOpen = false;
-	}
 </script>
 
 <svelte:head>
@@ -21,30 +16,13 @@
 	<title>RnS Seedy</title>
 </svelte:head>
 
+<Loader />
 <header>
 	<h1>RnS Seedy</h1>
 	<LightDarkSwitcher />
 </header>
 <main>
 	{@render children()}
-	<Dialog
-		bind:open={dialogOpen}
-		contentProps={{ escapeKeydownBehavior: 'ignore' }}
-		confirm="I promise to use this information responsibly"
-		onAction={confirmResponsible}
-	>
-		{#snippet title()}
-			HEY!! YOU!!!
-		{/snippet}
-		{#snippet description()}
-			<p>This information could spoil future events if used in an ongoing multiplayer game.</p>
-			<p>
-				<strong
-					>Please do not share information gained from this without the consent of your allies!</strong
-				>
-			</p>
-		{/snippet}
-	</Dialog>
 </main>
 <footer>
 	<ul class="info">
