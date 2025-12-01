@@ -58,6 +58,7 @@
 
 		possible_seeds = [];
 		searching = true;
+		searched = false;
 
 		// Rough match for possibly matching seeds
 		let matchCount = 0;
