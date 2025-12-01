@@ -67,12 +67,12 @@
 			const noSeedUrl = new URL(window.location.href);
 			noSeedUrl.searchParams.delete('seed');
 
-			window.history.pushState({}, '', noSeedUrl);
+			window.history.replaceState({}, '', noSeedUrl);
 		} else {
 			const seedUrl = new URL(window.location.href);
 			seedUrl.searchParams.set('seed', String(found_seeds[0][0]));
 
-			window.history.pushState({}, '', seedUrl);
+			window.history.replaceState({}, '', seedUrl);
 		}
 	});
 
