@@ -3,13 +3,11 @@
 	import { gem_to_id, itemList, name_to_id, type SeedData } from '$lib/item-map';
 	import Combobox from './combobox.svelte';
 	import Switch from './switch.svelte';
-	import SeedSearchWorker from '$lib/seed-search-worker?worker';
-	import { browser } from '$app/environment';
 
 	type Props = {
 		seed_data: SeedData[];
 		loading: boolean;
-		possible_seeds: Seed[];
+		possible_seeds: SeedData[];
 		fullSearch?: boolean;
 		searching?: boolean;
 		searched: boolean;
@@ -90,17 +88,7 @@
 			return true;
 		});
 
-		seedSearchWorker?.postMessage(matched_seeds);
-	}
-
-	let seedSearchWorker: Worker | undefined;
-	if (browser) {
-		seedSearchWorker = new SeedSearchWorker();
-		seedSearchWorker.addEventListener('message', (e) => handleSearchWorker(e));
-	}
-
-	function handleSearchWorker(event: MessageEvent<Seed[]>) {
-		possible_seeds = event.data;
+		possible_seeds = matched_seeds;
 		searching = false;
 		searched = true;
 	}

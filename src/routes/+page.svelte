@@ -31,7 +31,7 @@
 	let seedPage = $state(1);
 	let perPage = 10;
 
-	let found_seeds = $state<Seed[]>([]);
+	let found_seeds = $state<SeedData[]>([]);
 
 	// Reset page on seed change
 	$effect(() => {
@@ -96,8 +96,8 @@
 		<Pagination count={found_seeds.length} {perPage} bind:page={seedPage}></Pagination>
 	{/if}
 	<div class="seed-list">
-		{#each seedWindow as seed}
-			<SeedDisplay {seed} {playerCount} compact={compactSeeds} />
+		{#each seedWindow as seedData (seedData[0])}
+			<SeedDisplay {seedData} {playerCount} compact={compactSeeds} />
 		{/each}
 	</div>
 	{#if showPagination}

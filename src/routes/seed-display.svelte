@@ -9,19 +9,23 @@
 		id_to_potion_icon,
 		area_to_color,
 		type AreaName,
-		type GemName
+		type GemName,
+		type SeedData
 	} from '$lib/item-map';
-	import { getSeedChest, type Seed } from '$lib/seed';
+	import { Seed } from '$lib/seed';
 	import { Tooltip } from 'bits-ui';
 	import BnyTooltip from './bny-tooltip.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
+
 	type Props = {
-		seed: Seed;
+		seedData: SeedData;
 		playerCount: number;
 		compact: boolean;
 	};
 
-	let { seed, playerCount = $bindable(), compact }: Props = $props();
+	let { seedData, playerCount = $bindable(), compact }: Props = $props();
+
+	const seed = new Seed(seedData);
 
 	async function copySeedLink() {
 		const seedUrl = new URL(window.location.href);
@@ -43,18 +47,6 @@
 			toast.push("Your browser doesn't support copying to the clipboard...");
 		}
 	}
-
-	function seedChest(index: number) {
-		return getSeedChest(seed, index, playerCount);
-	}
-
-	function seedShop(index: number) {
-		return seed.shops.at(index);
-	}
-
-	function seedAreaTitle(index: number): string {
-		return area_to_name(seed.areas[index]);
-	}
 </script>
 
 {#snippet area(name: AreaName)}
@@ -74,9 +66,9 @@
 	<div class="chest-label-bar">
 		<p class="chest-label">{areaName ?? `Chest ${index}`}</p>
 		<p class="chest-color-label">
-			<span data-gem={getSeedChest(seed, index, playerCount)}
-				>{seedChest(index)?.label} chest{#if seedChest(index)}&thinsp;{@render inlineIcon(
-						`images/jewels/spr_item_jewels_${seedChest(index)?.spriteId}.png`
+			<span data-gem={seed.chest(index)?.name}
+				>{seed.chest(index)?.label} chest{#if seed.chest(index)}&thinsp;{@render inlineIcon(
+						`images/jewels/spr_item_jewels_${seed.chest(index)?.spriteId}.png`
 					)}
 				{/if}
 			</span>
@@ -84,11 +76,11 @@
 	</div>
 	<div
 		class="chest"
-		style={seedChest(index)?.colorId !== undefined
-			? `--chest-background: var(--surface-${seedChest(index)?.name}); --chest-color: var(--color-${seedChest(index)?.name})`
+		style={seed.chest(index)?.colorId !== undefined
+			? `--chest-background: var(--surface-${seed.chest(index)?.name}); --chest-color: var(--color-${seed.chest(index)?.name})`
 			: null}
 	>
-		{#each seedChest(index)?.items as item}
+		{#each seed.chest(index)?.items as item}
 			<div class="item">
 				<img
 					width="110"
@@ -140,7 +132,7 @@
 				</div>
 			</div>
 			<div class="potion-items">
-				{#each seedShop(index)?.potions as potion}
+				{#each seed.shop(index)?.potions as potion}
 					<div class="item">
 						{#if !compact}
 							<img
@@ -160,7 +152,7 @@
 			</div>
 		</div>
 		<div class="gem-list">
-			{#each seedShop(index)?.gems as gem}
+			{#each seed.shop(index)?.gems as gem}
 				<div class="gem">
 					<img
 						width="110"
@@ -209,11 +201,11 @@
 	<div class="area-list">
 		{@render area('extra_outskirts')}
 		<IconArrowFatRightFill class="area-arrow" />
-		{@render area(seed.areas[0])}
+		{@render area(seed.areaName(0))}
 		<IconArrowFatRightFill class="area-arrow" />
-		{@render area(seed.areas[1])}
+		{@render area(seed.areaName(1))}
 		<IconArrowFatRightFill class="area-arrow" />
-		{@render area(seed.areas[2])}
+		{@render area(seed.areaName(2))}
 		<IconArrowFatRightFill class="area-arrow" />
 		{@render area('extra_pale_keep')}
 	</div>
@@ -221,18 +213,18 @@
 	<div class="chest-list">
 		{@render chest(0, 'Outskirts 1')}
 		{@render chest(1, 'Outskirts 2')}
-		{@render chest(2, seedAreaTitle(0))}
-		{@render chest(3, seedAreaTitle(1))}
-		{@render chest(4, seedAreaTitle(2))}
+		{@render chest(2, seed.areaTitle(0))}
+		{@render chest(3, seed.areaTitle(1))}
+		{@render chest(4, seed.areaTitle(2))}
 		{@render chest(5, 'Pale Keep')}
 	</div>
 	<h4>Shops {@render inlineIcon('images/coin.png')}</h4>
-	<p class="shop-label">{seed.areas[0]}</p>
-	{@render shop(0, seed.areas[0])}
-	<p class="shop-label">{seed.areas[1]}</p>
-	{@render shop(1, seed.areas[1])}
-	<p class="shop-label">{seed.areas[2]}</p>
-	{@render shop(2, seed.areas[2])}
+	<p class="shop-label">{seed.areaName(0)}</p>
+	{@render shop(0, seed.areaName(0))}
+	<p class="shop-label">{seed.areaName(1)}</p>
+	{@render shop(1, seed.areaName(1))}
+	<p class="shop-label">{seed.areaName(2)}</p>
+	{@render shop(2, seed.areaName(2))}
 	<p class="shop-label">Pale Keep</p>
 	{@render shop(3, 'extra_pale_keep')}
 </article>
@@ -448,6 +440,7 @@
 		}
 		:global(.area-arrow) {
 			/* display: none; */
+			/* I don't know how to do this on mobile */
 		}
 
 		.shop-top-list {

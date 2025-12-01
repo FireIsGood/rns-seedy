@@ -2,13 +2,12 @@
 	import Combobox from './combobox.svelte';
 
 	import { name_to_id, itemList, gem_to_id } from '$lib/item-map';
-	import { createSeed, type Seed } from '$lib/seed';
 	import type { SeedData } from '$lib/item-map';
 
 	type Props = {
 		seed_data: SeedData[];
 		loading: boolean;
-		possible_seeds: Seed[];
+		possible_seeds: SeedData[];
 		searched: boolean;
 	};
 
@@ -71,7 +70,7 @@
 			return true;
 		});
 
-		possible_seeds = [...matched_seeds.map((s) => createSeed(s))];
+		possible_seeds = matched_seeds;
 		searched = true;
 	}
 

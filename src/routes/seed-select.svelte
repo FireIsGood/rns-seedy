@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { createSeed, type Seed } from '$lib/seed';
 	import { urlSeed } from '$lib/util';
 	import type { SeedData } from '$lib/item-map';
 
 	type Props = {
 		seed_data: SeedData[];
 		loading: boolean;
-		possible_seeds: Seed[];
+		possible_seeds: SeedData[];
 		searched: boolean;
 	};
 
@@ -19,7 +18,7 @@
 
 	function get_seed_data() {
 		const foundSeed = seed_data.filter((s) => s[0] === seed).at(0);
-		possible_seeds = foundSeed ? [createSeed(foundSeed)] : [];
+		possible_seeds = foundSeed ? [foundSeed] : [];
 		searched = true;
 	}
 
