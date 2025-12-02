@@ -87,13 +87,13 @@ export class Seed {
 	}
 
 	chest(index: number, playerCount: number | undefined = undefined): Chest | undefined {
-		if (playerCount === undefined || !(playerCount in playerCountToLootMap)) return undefined;
+		if (playerCount !== undefined && !(playerCount in playerCountToLootMap)) return undefined;
 
 		const chest = this.chests.at(index);
 		if (!chest) return undefined;
 
 		const alwaysFullChest = index === 0 || index === 1;
-		if (playerCount === 4 || alwaysFullChest) return chest;
+		if (playerCount === 4 || playerCount === undefined || alwaysFullChest) return chest;
 
 		// 1-3 players have less items and white chests use the same stock
 		const itemCount = playerCountToLootMap[playerCount as keyof typeof playerCountToLootMap];
