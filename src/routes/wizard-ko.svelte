@@ -64,7 +64,7 @@ ${character.color};`}
 		background-color: var(--character-color);
 		translate: 0 13px;
 		animation: spin 8000ms linear infinite;
-		mask: url('images/flight_ring.png') 0 0 / 100px 100px;
+		mask: url('$lib/images/flight_ring.png') 0 0 / 100px 100px;
 	}
 
 	@keyframes hit {
