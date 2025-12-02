@@ -3,14 +3,7 @@
 </script>
 
 <div class="wizard-ko-root">
-	<img
-		width="315"
-		height="478"
-		src="images/flight_ring.png"
-		style={`--spin-offset: ${spinOffsetSync}`}
-		alt="Flight Ring"
-		class="flight-ring"
-	/>
+	<div class="flight-ring" style={`--spin-offset: ${spinOffsetSync}`}></div>
 	<img
 		src="images/wizard_hit.png"
 		width="500"
@@ -58,11 +51,12 @@
 	}
 
 	.flight-ring {
-		width: 100px;
 		height: 100px;
-		position: absolute;
+		width: 100px;
+		background-color: oklch(0.7 0.1 314);
+		translate: 0 13px;
 		animation: spin 8000ms linear infinite;
-		translate: 0 4px;
+		mask: url('images/flight_ring.png') 0 0 / 100px 100px;
 	}
 
 	@keyframes hit {

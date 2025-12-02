@@ -28,14 +28,7 @@
 		{/each}
 	</div>
 	<div class="flight-ring-root">
-		<img
-			width="315"
-			height="478"
-			src="images/flight_ring.png"
-			style={`--spin-offset: ${spinOffsetSync}`}
-			alt="Flight Ring"
-			class="flight-ring"
-		/>
+		<div class="flight-ring" style={`--spin-offset: ${spinOffsetSync}`}></div>
 	</div>
 	<img
 		src="images/wizard_fly.gif"
@@ -87,8 +80,12 @@
 	}
 
 	.flight-ring {
-		translate: 0 4px;
+		height: 100px;
+		width: 100px;
+		background-color: oklch(0.7 0.1 314);
+		translate: 0 13px;
 		animation: spin 8000ms linear infinite;
+		mask: url('images/flight_ring.png') 0 0 / 100px 100px;
 	}
 
 	.areas {
