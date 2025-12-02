@@ -12,7 +12,7 @@
 		type GemName,
 		type SeedData
 	} from '$lib/item-map';
-	import { Seed } from '$lib/seed';
+	import { Seed, type Chest } from '$lib/seed';
 	import { Tooltip } from 'bits-ui';
 	import BnyTooltip from './bny-tooltip.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -62,25 +62,24 @@
 	</div>
 {/snippet}
 
-{#snippet chest(index: number, areaName: string | undefined = undefined)}
+{#snippet chest(index: number, chest: Chest | undefined, areaName: string | undefined = undefined)}
 	<div class="chest-label-bar">
 		<p class="chest-label">{areaName ?? `Chest ${index}`}</p>
 		<p class="chest-color-label">
-			<span data-gem={seed.chest(index)?.name}
-				>{seed.chest(index)?.label} chest{#if seed.chest(index)}&thinsp;{@render inlineIcon(
-						`images/jewels/spr_item_jewels_${seed.chest(index)?.spriteId}.png`
-					)}
-				{/if}
+			<span data-gem={chest?.name}
+				>{chest?.label} chest&thinsp;{@render inlineIcon(
+					`images/jewels/spr_item_jewels_${chest?.spriteId}.png`
+				)}
 			</span>
 		</p>
 	</div>
 	<div
 		class="chest"
-		style={seed.chest(index)?.colorId !== undefined
+		style={chest?.colorId !== undefined
 			? `--chest-background: var(--surface-${seed.chest(index)?.name}); --chest-color: var(--color-${seed.chest(index)?.name})`
 			: null}
 	>
-		{#each seed.chest(index)?.items as item}
+		{#each chest?.items as item}
 			<div class="item">
 				<img
 					width="110"
@@ -211,12 +210,12 @@
 	</div>
 	<h4>Chests {@render inlineIcon('images/Shop-icon.png')}</h4>
 	<div class="chest-list">
-		{@render chest(0, 'Outskirts 1')}
-		{@render chest(1, 'Outskirts 2')}
-		{@render chest(2, seed.areaTitle(0))}
-		{@render chest(3, seed.areaTitle(1))}
-		{@render chest(4, seed.areaTitle(2))}
-		{@render chest(5, 'Pale Keep')}
+		{@render chest(0, seed.chest(0), 'Outskirts 1')}
+		{@render chest(1, seed.chest(1), 'Outskirts 2')}
+		{@render chest(2, seed.chest(2, playerCount), seed.areaTitle(0))}
+		{@render chest(3, seed.chest(3, playerCount), seed.areaTitle(1))}
+		{@render chest(4, seed.chest(4, playerCount), seed.areaTitle(2))}
+		{@render chest(5, seed.chest(5, playerCount), 'Pale Keep')}
 	</div>
 	<h4>Shops {@render inlineIcon('images/coin.png')}</h4>
 	<p class="shop-label">{seed.areaName(0)}</p>

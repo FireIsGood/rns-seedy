@@ -22,7 +22,7 @@ type Item = {
 	name: string;
 };
 
-type Chest = {
+export type Chest = {
 	label?: string; // For display
 	name?: string; // For CSS variable
 	colorId?: number;
