@@ -1,24 +1,33 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { currentLoadingCharacter as character } from '$lib/util';
+
 	const spinOffsetSync = (Date.now() % 8000) / 8000;
 </script>
 
-<div class="wizard-ko-root">
-	<div class="flight-ring" style={`--spin-offset: ${spinOffsetSync}`}></div>
-	<img
-		src="images/wizard_hit.png"
-		width="500"
-		height="500"
-		alt="Wizard Rabbit hit"
-		class="wizard wizard-hit"
-	/>
-	<img
-		src="images/wizard_ko.png"
-		width="500"
-		height="500"
-		alt="Wizard Rabbit knocked out"
-		class="wizard wizard-ko"
-	/>
-</div>
+{#if browser}
+	<div class="wizard-ko-root">
+		<div
+			class="flight-ring"
+			style={`--spin-offset: ${spinOffsetSync}; --character-color:
+${character.color};`}
+		></div>
+		<img
+			src={`images/characters/${character.name}_hit.png`}
+			width={character.width}
+			height={character.height}
+			alt="Rabbit hit"
+			class="wizard wizard-hit"
+		/>
+		<img
+			src={`images/characters/${character.name}_ko.png`}
+			width={character.width}
+			height={character.height}
+			alt="Rabbit knocked out"
+			class="wizard wizard-ko"
+		/>
+	</div>
+{/if}
 
 <style>
 	.wizard-ko-root {
@@ -30,8 +39,7 @@
 
 	.wizard {
 		grid-area: 1 / 1 / 1 / 1;
-		width: 120px;
-		height: 120px;
+		scale: calc(120 / 500);
 		position: absolute;
 		z-index: 0;
 	}
@@ -53,7 +61,7 @@
 	.flight-ring {
 		height: 100px;
 		width: 100px;
-		background-color: oklch(0.7 0.1 314);
+		background-color: var(--character-color);
 		translate: 0 13px;
 		animation: spin 8000ms linear infinite;
 		mask: url('images/flight_ring.png') 0 0 / 100px 100px;

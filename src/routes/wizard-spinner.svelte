@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { area_to_icon, type AreaName } from '$lib/item-map';
+	import { currentLoadingCharacter as character } from '$lib/util';
 
 	const areaList: AreaName[] = [
 		'extra_outskirts',
@@ -11,40 +13,47 @@
 		'extra_pale_keep',
 		'extra_moonlit_prescipice'
 	];
+
 	const spinOffsetSync = (Date.now() % 8000) / 8000;
 </script>
 
-<div class="wizard-spinner-root">
-	<div class="areas">
-		{#each areaList as areaName, index}
-			<img
-				width="100"
-				height="95"
-				class="area-icon"
-				src={`images/areas/${area_to_icon(areaName)}.webp`}
-				style={`--slide-offset: ${index}`}
-				alt="Area icon"
-			/>
-		{/each}
+{#if browser}
+	<div class="wizard-spinner-root">
+		<div class="areas">
+			{#each areaList as areaName, index}
+				<img
+					width="100"
+					height="95"
+					class="area-icon"
+					src={`images/areas/${area_to_icon(areaName)}.webp`}
+					style={`--slide-offset: ${index}`}
+					alt="Area icon"
+				/>
+			{/each}
+		</div>
+		<div class="flight-ring-root">
+			<div
+				class="flight-ring"
+				style={`--spin-offset: ${spinOffsetSync}; --character-color:
+${character.color};`}
+			></div>
+		</div>
+		<img
+			src={`images/characters/${character.name}_fly.gif`}
+			width={character.width}
+			height={character.height}
+			alt="Rabbit flying"
+			class="wizard wizard-fly"
+		/>
+		<img
+			src={`images/characters/${character.name}_spin.gif`}
+			width={character.width}
+			height={character.height}
+			alt="Rabbit spinning"
+			class="wizard wizard-spin"
+		/>
 	</div>
-	<div class="flight-ring-root">
-		<div class="flight-ring" style={`--spin-offset: ${spinOffsetSync}`}></div>
-	</div>
-	<img
-		src="images/wizard_fly.gif"
-		width="500"
-		height="500"
-		alt="Wizard Rabbit flying"
-		class="wizard wizard-fly"
-	/>
-	<img
-		src="images/wizard_spin.gif"
-		width="500"
-		height="500"
-		alt="Wizard Rabbit spinning"
-		class="wizard wizard-spin"
-	/>
-</div>
+{/if}
 
 <style>
 	.wizard-spinner-root {
@@ -56,8 +65,7 @@
 
 	.wizard {
 		grid-area: 1 / 1 / 1 / 1;
-		width: 120px;
-		height: 120px;
+		scale: calc(120 / 500);
 		position: absolute;
 		z-index: 0;
 	}
@@ -82,7 +90,7 @@
 	.flight-ring {
 		height: 100px;
 		width: 100px;
-		background-color: oklch(0.7 0.1 314);
+		background-color: var(--character-color);
 		translate: 0 13px;
 		animation: spin 8000ms linear infinite;
 		mask: url('images/flight_ring.png') 0 0 / 100px 100px;
