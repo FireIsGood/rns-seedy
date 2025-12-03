@@ -65,7 +65,7 @@ ${character.color};`}
 
 	.wizard {
 		grid-area: 1 / 1 / 1 / 1;
-		scale: calc(120 / 500);
+		width: 120px;
 		position: absolute;
 		z-index: 0;
 	}
