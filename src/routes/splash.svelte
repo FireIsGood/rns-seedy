@@ -1,15 +1,20 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 	import Dialog from './Dialog.svelte';
 
 	let dialogOpen = $state(true);
 	function confirmResponsible() {
 		dialogOpen = false;
 	}
+
+	let loaded = $state(false);
+	onMount(() => {
+		loaded = true;
+	});
 </script>
 
-<div class="loader" class:hide={browser}>
-	<div class="loader-root">
+<div id="splash-root" class:hide={loaded}>
+	<div class="splash">
 		<div class="rabbit-list">
 			{#each [0, 1, 2, 3] as index}
 				<img
@@ -17,12 +22,12 @@
 					alt="Spinning wizard rabbit"
 					width="110"
 					height="110"
-					class="loader-image"
+					class="splash-image"
 					style={`--bnuuy-index: ${index}`}
 				/>
 			{/each}
 		</div>
-		<p class="loader-description">Steel Yourself!</p>
+		<p class="splash-description">Steel Yourself!</p>
 	</div>
 </div>
 
@@ -46,7 +51,7 @@
 </Dialog>
 
 <style>
-	.loader {
+	#splash-root {
 		position: fixed;
 		inset: 0;
 		z-index: 100;
@@ -58,9 +63,14 @@
 			display 300ms,
 			opacity 300ms;
 		transition-behavior: allow-discrete;
+
+		&.hide {
+			display: none;
+			opacity: 0;
+		}
 	}
 
-	.loader-root {
+	.splash {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -75,7 +85,7 @@
 		gap: var(--size-2);
 	}
 
-	.loader-image {
+	.splash-image {
 		width: 40px;
 		height: 40px;
 		animation: jumpy 750ms calc(60ms * var(--bnuuy-index, 0)) linear infinite;
@@ -100,13 +110,8 @@
 		}
 	}
 
-	.loader-description {
+	.splash-description {
 		font-size: var(--font-size-3);
 		color: var(--text-2);
-	}
-
-	.hide {
-		display: none;
-		opacity: 0;
 	}
 </style>
