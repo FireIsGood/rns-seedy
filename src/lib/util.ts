@@ -18,31 +18,31 @@ type LoadingCharacterData = {
 const loadingCharacterData: Record<LoadingCharacter, LoadingCharacterData> = {
 	wizard: {
 		name: 'wizard',
-		color: '#b58cca',
+		color: '#694ddd',
 		width: 500,
 		height: 500
 	},
 	heavyblade: {
 		name: 'heavyblade',
-		color: '#b780a5',
+		color: '#e873a8',
 		width: 625,
 		height: 500
 	},
 	dancer: {
 		name: 'dancer',
-		color: '#c7baad',
+		color: '#ffe0a1',
 		width: 500,
 		height: 500
 	},
 	assassin: {
 		name: 'assassin',
-		color: '#708cdb',
+		color: '#4c81ff',
 		width: 500,
 		height: 500
 	},
 	sniper: {
 		name: 'sniper',
-		color: '#768adb',
+		color: '#597bff',
 		width: 500,
 		height: 500
 	}
