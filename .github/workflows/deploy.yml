@@ -11,6 +11,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache cargo & wasm-pack
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: 'rnssp-wasm -> target'
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -v 0.13.1
+
+      - name: Build wasm module
+        run: cd rnssp-wasm/ && wasm-pack build
+
       # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
       - name: Install pnpm
         uses: pnpm/action-setup@v3
