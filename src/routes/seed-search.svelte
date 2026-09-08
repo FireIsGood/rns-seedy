@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { gem_to_id, itemList, name_to_id, type SeedData } from '$lib/item-map';
 	import Combobox from './combobox.svelte';
+	import { type Settings, copySettings } from '$lib/util';
 
 	type Props = {
 		seed_data: SeedData[];
@@ -8,6 +9,8 @@
 		possible_seeds: SeedData[];
 		searching?: boolean; // Currently not used because searches are fast!
 		searched: boolean;
+		settings: Settings;
+		lastSearchSettings: Settings;
 	};
 
 	let {
@@ -15,7 +18,9 @@
 		loading = $bindable(true),
 		possible_seeds = $bindable([]),
 		searching = $bindable(false),
-		searched = $bindable(false)
+		searched = $bindable(false),
+		settings = $bindable(),
+		lastSearchSettings = $bindable(),
 	}: Props = $props();
 
 	let item_1 = $state('');
@@ -34,6 +39,9 @@
 	let area_1 = $state('');
 	let area_2 = $state('');
 	let area_3 = $state('');
+	let area_1_id = $derived(Number(area_1));
+	let area_2_id = $derived(Number(area_2));
+	let area_3_id = $derived(Number(area_3));
 
 	let gem_1 = $state('');
 	let gem_2 = $state('');
@@ -55,11 +63,11 @@
 		const matched_seeds = seed_data.filter((seed) => {
 			const itemMatch = [item_1_id, item_2_id, item_3_id, item_4_id, item_5_id, item_6_id].every(
 				(id, index) =>
-					id === 0 || seed.slice((index + 1) * 5 + 1, (index + 1) * 5 + 5 + 1).includes(id) // Blank = Match any
+					id === 0 || seed.slice(index * 5 + 6, index * 5 + 5 + 6).includes(id) // Blank = Match any
 			);
 			if (!itemMatch) return false;
-			const areasMatch = [area_1, area_2, area_3].every(
-				(id, index) => id === '' || seed.at(index + 1) === id // Blank = Match any
+			const areasMatch = [area_1_id, area_2_id, area_3_id].every(
+				(id, index) => id === 0 || seed.at(index + 2) === id // Blank = Match any
 			);
 			if (!areasMatch) return false;
 
@@ -77,6 +85,7 @@
 		possible_seeds = matched_seeds;
 		searching = false;
 		searched = true;
+		copySettings(lastSearchSettings, settings);
 	}
 
 	function reset_seed_data() {
@@ -98,15 +107,23 @@
 
 		possible_seeds = [];
 		searched = false;
+		copySettings(lastSearchSettings, settings);
 	}
 
 	const items = itemList.map((item) => ({ value: item, label: item }));
 	const areas = [
-		{ value: 'hw_nest', label: "Scholar's Nest (Crows)" },
-		{ value: 'hw_arsenal', label: "King's Arsenal (Wolves)" },
-		{ value: 'hw_lighthouse', label: 'Red Darkhosue (Dragons)' },
-		{ value: 'hw_streets', label: 'Churchmouse Streets (Mice)' },
-		{ value: 'hw_lakeside', label: 'Emerald Lakeside (Frogs)' }
+		// { value: 0, label: "Kingdom Outskirts" },
+		{ value: "1", label: "Scholar's Nest (Crows)" },
+		{ value: "2", label: "King's Aresenal (Wolves)" },
+		{ value: "3", label: "Red Darkhouse (Dragons)" },
+		{ value: "4", label: "Churchmouse Streets (Mice)" },
+		{ value: "5", label: "Emerald Lakeside (Frogs)" },
+		// { value: 6, label: "Moonlit Prescipice" },
+		// { value: 7, label: "Crack in the Geode" },
+		{ value: "8", label: "Subterra Sanctum" },
+		{ value: "9", label: "Darkhouse Depths" },
+		{ value: "10", label: "Atelier Aurum" },
+		// { value: 11, label: "Looping Hallway" },
 	];
 	const gems = ['Opal', 'Sapphire', 'Ruby', 'Garnet', 'Emerald'].map((item) => ({
 		value: item,
@@ -119,8 +136,7 @@
 	<section class="prose">
 		<h3>About</h3>
 		<p>
-			This tool allows you to find your <strong>a seed given items and areas</strong> in a Hard or Lunar
-			difficulty run, for if you have the end screen but not a specific chest.
+			This tool allows you to find a seed <strong>given items and areas</strong> from the end screen of a run
 		</p>
 		<p>
 			This currently does not account for skipped items, so find someone who got an item at every
@@ -134,7 +150,7 @@
 			possible seeds or by gem availability in shops.
 		</p>
 		<p>
-			To find seeds with specific parameters, enter them. E.g. you can find seeds with a Mountain
+			You can also try to find potentially wanted seeds. E.g. you can search for seeds with a Mountain
 			Staff in the first chest and a Ruby Special available somewhere in the run.
 		</p>
 	</section>

@@ -1,9 +1,13 @@
 <script lang="ts">
-	import { urlSeed } from '$lib/util';
+	import { urlSeed, type Settings, copySettings } from '$lib/util';
 	import type { SeedData } from '$lib/item-map';
+	import { Unlocks, StartingArea, int_to_area, predict_seed, new_seed_data } from 'rnssp-wasm';
 
 	type Props = {
 		seed_data: SeedData[];
+		playerCount: number;
+		settings: Settings;
+		lastSearchSettings: Settings;
 		loading: boolean;
 		possible_seeds: SeedData[];
 		searched: boolean;
@@ -11,20 +15,26 @@
 
 	let {
 		seed_data,
+		playerCount = $bindable(),
+		settings = $bindable(),
+		lastSearchSettings = $bindable(),
 		loading = $bindable(true),
 		possible_seeds = $bindable([]),
 		searched = $bindable(false)
 	}: Props = $props();
 
 	function get_seed_data() {
-		const foundSeed = seed_data.filter((s) => s[0] === seed).at(0);
-		possible_seeds = foundSeed ? [foundSeed] : [];
+		// console.log(seed, 4, difficulty > 1, starting_area, unlocks)
+		// Let frontend worry about player counts below 4
+		possible_seeds = [predict_seed(seed, 4, settings.difficulty > 1, settings.starting_area, settings.unlocks)];
 		searched = true;
+		copySettings(lastSearchSettings, settings);
 	}
 
 	function reset_seed_data() {
 		possible_seeds = [];
 		searched = false;
+		copySettings(lastSearchSettings, settings);
 	}
 
 	let seed = $state<number>(urlSeed ?? 0);
@@ -44,11 +54,9 @@
 	<section class="prose">
 		<h3>About</h3>
 		<p>
-			This tool allows you to find your <strong>a given seed</strong> in a Hard or Lunar difficulty run.
-		</p>
-		<p>
-			Only the unique seeds have been recorded for searching, so some seeds in the higher digits
-			will not be found.
+			This tool lets you display <strong>a given seed</strong> based on the given settings.
+			Any seed can be input, but behavior might be funky for large seeds.
+			The seed in the results will always match <strong>a</strong> correct seed ingame
 		</p>
 		<h3>Usage</h3>
 		<p>Type in the seed.</p>
