@@ -563,5 +563,13 @@
 		.item-text p {
 			display: inline;
 		}
+
+		.item-price {
+			display: inline-flex;
+			align-items: center;
+			padding: unset;
+			border: unset;
+			background-color: unset;
+		}
 	}
 </style>
