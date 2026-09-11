@@ -296,7 +296,7 @@
 
 	.seed-entry header {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: 1fr 5fr 1fr;
 	}
 
 	.chest-label,
@@ -462,10 +462,6 @@
 	}
 
 	@media screen and (width < 800px) {
-		.seed-entry header {
-			grid-template-columns: 1fr 5fr 1fr;
-		}
-
 		.area-list {
 			display: flex;
 			flex-wrap: wrap;
