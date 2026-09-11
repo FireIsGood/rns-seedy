@@ -10,13 +10,14 @@
 		id_to_potion_icon,
 		area_to_color,
 		type GemName,
-		type SeedData
+		type SeedData,
+		type AreaName
 	} from '$lib/item-map';
 	import { Seed, type Chest } from '$lib/seed';
 	import { Tooltip } from 'bits-ui';
 	import BnyTooltip from './bny-tooltip.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { difficulty_to_icon, type Settings } from '$lib/util';
+	import { difficulty_to_icon, difficulty_to_text, type Settings } from '$lib/util';
 	import { Unlocks, StartingArea } from 'rnssp-wasm';
 
 	type Props = {
@@ -26,12 +27,7 @@
 		compact: boolean;
 	};
 
-	let {
-		seedData,
-		playerCount = $bindable(),
-		settings,
-		compact
-	}: Props = $props();
+	let { seedData, playerCount = $bindable(), settings, compact }: Props = $props();
 
 	const seed = $derived(new Seed(seedData));
 
@@ -66,7 +62,7 @@
 	}
 </script>
 
-{#snippet area(name: string)}
+{#snippet area(name: AreaName)}
 	<div class="area">
 		<img
 			width="100"
@@ -111,9 +107,9 @@
 	</div>
 {/snippet}
 
-{#snippet shop(index: number, area: string | undefined = undefined)}
+{#snippet shop(index: number, area: AreaName | undefined = undefined)}
 	<div class="shop-label-bar">
-		<p class="shop-label">{area_to_name(area) ?? `Shop ${index}`}</p>
+		<p class="shop-label">{area ? area_to_name(area) : `Shop ${index}`}</p>
 	</div>
 	<div
 		class="shop"
@@ -200,10 +196,19 @@
 
 <article class="seed-entry" class:compact>
 	<header>
-		<img class="inline-icon difficulty" src={"images/difficulty/" + difficulty_to_icon(settings.difficulty)} />
+		<img
+			class="inline-icon difficulty"
+			alt={`${difficulty_to_text(settings.difficulty)} difficulty`}
+			src={'images/difficulty/' + difficulty_to_icon(settings.difficulty)}
+		/>
 		<h3>
-		<img class="inline-icon" src={"images/starting_area/" + starting_area_to_icon(settings.starting_area)} />
-			Seed {seed.id} ({playerCount}p)</h3>
+			<img
+				class="inline-icon"
+				alt={`Starting area ${settings.starting_area}`}
+				src={'images/starting_area/' + starting_area_to_icon(settings.starting_area)}
+			/>
+			Seed {seed.id} ({playerCount}p)
+		</h3>
 		<Tooltip.Provider delayDuration={0} disableCloseOnTriggerClick={false}>
 			<BnyTooltip triggerProps={{ class: 'share-button-root blank-button' }}>
 				{#snippet trigger()}
@@ -271,8 +276,7 @@
 	}
 
 	.difficulty {
-  	// margin: 0.5em;
-  	height: 2em !important;
+		height: 2em !important;
 	}
 
 	h4 {
@@ -458,6 +462,10 @@
 	}
 
 	@media screen and (width < 800px) {
+		.seed-entry header {
+			grid-template-columns: 1fr 5fr 1fr;
+		}
+
 		.area-list {
 			display: flex;
 			flex-wrap: wrap;

@@ -26,7 +26,15 @@
 	function get_seed_data() {
 		// console.log(seed, 4, difficulty > 1, starting_area, unlocks)
 		// Let frontend worry about player counts below 4
-		possible_seeds = [predict_seed(seed, 4, settings.difficulty > 1, settings.starting_area, settings.unlocks)];
+		possible_seeds = [
+			predict_seed(
+				seed,
+				4,
+				settings.difficulty > 1,
+				settings.starting_area,
+				settings.unlocks
+			) as SeedData
+		];
 		searched = true;
 		copySettings(lastSearchSettings, settings);
 	}
@@ -54,9 +62,9 @@
 	<section class="prose">
 		<h3>About</h3>
 		<p>
-			This tool lets you display <strong>a given seed</strong> based on the given settings.
-			Any seed can be input, but behavior might be funky for large seeds.
-			The seed in the results will always match <strong>a</strong> correct seed ingame
+			This tool lets you display <strong>a given seed</strong> based on the given settings. Any seed
+			can be input, but behavior might be funky for large seeds. The seed in the results will always
+			match <strong>a</strong> correct seed ingame
 		</p>
 		<h3>Usage</h3>
 		<p>Type in the seed.</p>

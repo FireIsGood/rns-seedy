@@ -10,7 +10,7 @@ const urlUnlockString = urlParams?.get('unlocks') ?? null;
 export const urlSeed = urlSeedString ? Number(urlSeedString) : null;
 export const urlTab = urlParams?.get('tab') ?? null;
 export const urlDiff = urlDiffString ? Number(urlDiffString) : null;
-export const urlArea = urlAreaString ? int_to_area(urlAreaString) : null;
+export const urlArea = urlAreaString ? int_to_area(Number(urlAreaString)) : null;
 export const urlUnlocks = urlUnlockString ? Unlocks.from_bitstring(urlUnlockString) : null;
 
 // Loading things
@@ -60,37 +60,61 @@ const randomCharacter =
 export const currentLoadingCharacter = loadingCharacterData[randomCharacter];
 
 export function difficulty_to_icon(difficulty: number): string {
-	let ret = "";
+	let ret = '';
 	switch (difficulty) {
 		case 0:
-			ret = "Difficulty_Cute.png";
+			ret = 'Difficulty_Cute.png';
 			break;
 		case 1:
-			ret = "Difficulty_Normal.png";
+			ret = 'Difficulty_Normal.png';
 			break;
 		case 2:
-			ret = "Difficulty_Hard.png";
+			ret = 'Difficulty_Hard.png';
 			break;
 		case 3:
-			ret = "Difficulty_Lunar.png";
+			ret = 'Difficulty_Lunar.png';
 			break;
 		default:
-			ret = "ERROR_ICON";
+			ret = 'ERROR_ICON';
 			break;
 	}
 	return ret;
 }
 
-type Settings = {
+export function difficulty_to_text(difficulty: number): string {
+	let ret = '';
+	switch (difficulty) {
+		case 0:
+			ret = 'Cute';
+			break;
+		case 1:
+			ret = 'Normal';
+			break;
+		case 2:
+			ret = 'Hard';
+			break;
+		case 3:
+			ret = 'Lunar';
+			break;
+		default:
+			ret = 'ERROR_DIFFICULTY';
+			break;
+	}
+	return ret;
+}
+
+export type Settings = {
 	difficulty: number;
 	starting_area: StartingArea;
 	unlocks: Unlocks;
 };
 
-export function isSettingsEqual(self: Settings, other: Settings): bool {
-	return self.difficulty === other.difficulty
-		&& self.starting_area === other.starting_area
-		&& self.unlocks.get_bitstring() === other.unlocks.get_bitstring();
+export function isSettingsEqual(self: Settings, other: Settings): boolean {
+	return (
+		self.difficulty === other.difficulty &&
+		self.starting_area === other.starting_area &&
+		self.unlocks.get_bitstring() === other.unlocks.get_bitstring()
+	);
 }
 
 export function copySettings(to: Settings, from: Settings) {
@@ -99,17 +123,19 @@ export function copySettings(to: Settings, from: Settings) {
 	to.unlocks = from.unlocks.copy();
 }
 
-export function settingsHavePrecalc(self: Settings): bool {
+export function settingsHavePrecalc(self: Settings): boolean {
 	const valid_starts = [
 		StartingArea.RandomKingdom,
 		StartingArea.RandomExtra,
 		StartingArea.TrueRandom,
-		StartingArea.ChaoticRandom,
+		StartingArea.ChaoticRandom
 	];
-	return self.unlocks.get_bitstring() === Unlocks.full().get_bitstring()
-		&& valid_starts.includes(self.starting_area)
+	return (
+		self.unlocks.get_bitstring() === Unlocks.full().get_bitstring() &&
+		valid_starts.includes(self.starting_area)
+	);
 }
 
 export function getPrecalcFile(self: Settings): string {
-		return `data/rand-area-${self.starting_area}${self.difficulty > 1 ? "-highdiff" : ""}.json`;
+	return `data/rand-area-${self.starting_area}${self.difficulty > 1 ? '-highdiff' : ''}.json`;
 }
